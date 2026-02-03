@@ -196,10 +196,10 @@ export default function CulturalSection() {
         </div>
       </div>
 
-      {/* CTA - bottom */}
+      {/* CTA - bottom right */}
       <button
         ref={ctaRef}
-        className="absolute left-1/2 top-[90%] -translate-x-1/2 cyber-button border-[#FF2BD6] z-20 group"
+        className="absolute right-[7vw] top-[86%] cyber-button border-[#FF2BD6] z-20 group"
         style={{ opacity: 0 }}
       >
         <span className="relative z-10 flex items-center gap-2">
