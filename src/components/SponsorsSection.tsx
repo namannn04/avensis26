@@ -1,0 +1,198 @@
+import { useRef, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Award, Star, Zap } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
+
+const sponsorTiers = [
+  {
+    name: 'Title Partner',
+    icon: Award,
+    color: '#FFAA2B',
+    sponsors: [
+      { name: 'TechCorp', logo: 'TC' },
+    ],
+  },
+  {
+    name: 'Powered By',
+    icon: Zap,
+    color: '#7B2BFF',
+    sponsors: [
+      { name: 'CloudNine', logo: 'C9' },
+      { name: 'DataFlow', logo: 'DF' },
+    ],
+  },
+  {
+    name: 'Associate',
+    icon: Star,
+    color: '#00F0FF',
+    sponsors: [
+      { name: 'CodeBase', logo: 'CB' },
+      { name: 'DevStack', logo: 'DS' },
+      { name: 'NetWave', logo: 'NW' },
+      { name: 'ByteSync', logo: 'BS' },
+    ],
+  },
+];
+
+export default function SponsorsSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const tiersRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      // Title animation
+      gsap.fromTo(
+        titleRef.current,
+        { y: 30, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.6,
+          scrollTrigger: {
+            trigger: titleRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+          },
+        }
+      );
+
+      // Tiers animation
+      if (tiersRef.current) {
+        const tiers = tiersRef.current.querySelectorAll('.sponsor-tier');
+        tiers.forEach((tier, index) => {
+          const logos = tier.querySelectorAll('.sponsor-logo');
+          
+          gsap.fromTo(
+            tier.querySelector('.tier-header'),
+            { y: 20, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.5,
+              delay: index * 0.1,
+              scrollTrigger: {
+                trigger: tier,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+
+          gsap.fromTo(
+            logos,
+            { y: 16, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.4,
+              stagger: 0.05,
+              delay: index * 0.1 + 0.2,
+              scrollTrigger: {
+                trigger: tier,
+                start: 'top 80%',
+                toggleActions: 'play none none reverse',
+              },
+            }
+          );
+        });
+      }
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      id="sponsors"
+      className="relative w-full bg-[#05060B] py-20 lg:py-32"
+    >
+      <div className="w-full px-6 lg:px-12">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2
+            ref={titleRef}
+            className="font-orbitron font-black text-[clamp(36px,4vw,64px)] text-[#F4F6FF] tracking-widest text-glow-violet mb-4"
+          >
+            SPONSORS
+          </h2>
+          <p className="font-inter text-[#A7B0C8] text-lg">
+            Powered by industry leaders
+          </p>
+        </div>
+
+        {/* Sponsor tiers */}
+        <div ref={tiersRef} className="space-y-16">
+          {sponsorTiers.map((tier) => {
+            const Icon = tier.icon;
+            return (
+              <div key={tier.name} className="sponsor-tier">
+                {/* Tier header */}
+                <div className="tier-header flex items-center justify-center gap-3 mb-8">
+                  <Icon size={20} style={{ color: tier.color }} />
+                  <span
+                    className="font-mono text-sm tracking-[0.2em] uppercase"
+                    style={{ color: tier.color }}
+                  >
+                    {tier.name}
+                  </span>
+                  <div
+                    className="w-16 h-px"
+                    style={{ background: `linear-gradient(90deg, transparent, ${tier.color}, transparent)` }}
+                  />
+                </div>
+
+                {/* Sponsor logos */}
+                <div className="flex flex-wrap justify-center gap-6">
+                  {tier.sponsors.map((sponsor) => (
+                    <div
+                      key={sponsor.name}
+                      className="sponsor-logo group relative w-32 h-32 lg:w-40 lg:h-40 bg-[#0B0E16] border border-white/10 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300 hover:border-[#7B2BFF]/50 hover:-translate-y-1"
+                    >
+                      {/* Glow effect */}
+                      <div
+                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        style={{
+                          boxShadow: `0 0 30px ${tier.color}20`,
+                        }}
+                      />
+                      
+                      {/* Logo content */}
+                      <div className="relative z-10 text-center">
+                        <span
+                          className="font-orbitron font-bold text-2xl lg:text-3xl"
+                          style={{ color: tier.color }}
+                        >
+                          {sponsor.logo}
+                        </span>
+                        <p className="font-mono text-xs text-[#A7B0C8] mt-2">
+                          {sponsor.name}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Become a sponsor CTA */}
+        <div className="mt-20 text-center">
+          <p className="font-inter text-[#A7B0C8] mb-6">
+            Want to sponsor AVENSIS'26?
+          </p>
+          <button className="cyber-button">
+            <span className="relative z-10">Become a Sponsor</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}

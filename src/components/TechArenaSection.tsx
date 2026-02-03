@@ -1,0 +1,216 @@
+import { useRef, useLayoutEffect } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ArrowRight, Cpu, Code, Palette } from 'lucide-react';
+
+gsap.registerPlugin(ScrollTrigger);
+
+export default function TechArenaSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const titleTechRef = useRef<HTMLDivElement>(null);
+  const titleArenaRef = useRef<HTMLDivElement>(null);
+  const droneRef = useRef<HTMLImageElement>(null);
+  const descriptorRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLButtonElement>(null);
+  const labelRef = useRef<HTMLSpanElement>(null);
+
+  useLayoutEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const ctx = gsap.context(() => {
+      const scrollTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: '+=130%',
+          pin: true,
+          scrub: 0.6,
+        },
+      });
+
+      // ENTRANCE (0% - 30%)
+      scrollTl.fromTo(
+        titleTechRef.current,
+        { x: '-55vw', opacity: 0 },
+        { x: 0, opacity: 1, ease: 'none' },
+        0
+      );
+
+      scrollTl.fromTo(
+        titleArenaRef.current,
+        { x: '-55vw', opacity: 0 },
+        { x: 0, opacity: 1, ease: 'none' },
+        0.05
+      );
+
+      scrollTl.fromTo(
+        droneRef.current,
+        { y: '60vh', scale: 0.85, rotate: -6, opacity: 0 },
+        { y: 0, scale: 1, rotate: 0, opacity: 1, ease: 'none' },
+        0
+      );
+
+      scrollTl.fromTo(
+        descriptorRef.current,
+        { x: '18vw', opacity: 0 },
+        { x: 0, opacity: 1, ease: 'none' },
+        0.1
+      );
+
+      scrollTl.fromTo(
+        ctaRef.current,
+        { x: '18vw', opacity: 0 },
+        { x: 0, opacity: 1, ease: 'none' },
+        0.15
+      );
+
+      scrollTl.fromTo(
+        labelRef.current,
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, ease: 'none' },
+        0.2
+      );
+
+      // SETTLE (30% - 70%): Hold positions
+
+      // EXIT (70% - 100%)
+      scrollTl.fromTo(
+        titleTechRef.current,
+        { x: 0, opacity: 1 },
+        { x: '-22vw', opacity: 0, ease: 'power2.in' },
+        0.7
+      );
+
+      scrollTl.fromTo(
+        titleArenaRef.current,
+        { x: 0, opacity: 1 },
+        { x: '-22vw', opacity: 0, ease: 'power2.in' },
+        0.72
+      );
+
+      scrollTl.fromTo(
+        droneRef.current,
+        { y: 0, scale: 1, opacity: 1 },
+        { y: '28vh', scale: 0.92, opacity: 0, ease: 'power2.in' },
+        0.7
+      );
+
+      scrollTl.fromTo(
+        descriptorRef.current,
+        { x: 0, opacity: 1 },
+        { x: '10vw', opacity: 0, ease: 'power2.in' },
+        0.75
+      );
+
+      scrollTl.fromTo(
+        ctaRef.current,
+        { x: 0, opacity: 1 },
+        { x: '10vw', opacity: 0, ease: 'power2.in' },
+        0.78
+      );
+
+      scrollTl.fromTo(
+        labelRef.current,
+        { opacity: 1 },
+        { opacity: 0, ease: 'power2.in' },
+        0.8
+      );
+    }, section);
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      className="relative w-full h-screen bg-[#05060B] overflow-hidden hex-grid"
+    >
+      {/* Hex grid overlay */}
+      <div className="absolute inset-0 bg-linear-to-b from-[#05060B] via-transparent to-[#05060B]" />
+
+      {/* Title stack - left side */}
+      <div
+        ref={titleTechRef}
+        className="absolute left-[7vw] top-[18%] z-20"
+        style={{ opacity: 0 }}
+      >
+        <h2 className="font-orbitron font-black text-[clamp(56px,7.5vw,120px)] text-[#F4F6FF] tracking-widest text-glow-violet">
+          TECH
+        </h2>
+      </div>
+
+      <div
+        ref={titleArenaRef}
+        className="absolute left-[7vw] top-[32%] z-20"
+        style={{ opacity: 0 }}
+      >
+        <h2 className="font-orbitron font-black text-[clamp(56px,7.5vw,120px)] text-[#F4F6FF] tracking-widest text-glow-cyan">
+          ARENA
+        </h2>
+      </div>
+
+      {/* Drone image - center */}
+      <img
+        ref={droneRef}
+        src="/tech_drone.png"
+        alt="Tech Drone"
+        className="absolute left-1/2 top-[62%] -translate-x-1/2 -translate-y-1/2 w-[54vw] max-w-205 h-auto object-contain z-10 floating"
+        style={{ opacity: 0 }}
+      />
+
+      {/* Descriptor - right side */}
+      <div
+        ref={descriptorRef}
+        className="absolute left-[56vw] top-[26%] w-[38vw] z-20"
+        style={{ opacity: 0 }}
+      >
+        <p className="font-inter text-[clamp(14px,1.2vw,18px)] text-[#A7B0C8] leading-relaxed">
+          Hackathons. AI builds. UI wars. Compete for glory and prizes in the ultimate
+          battleground of innovation.
+        </p>
+
+        {/* Event categories */}
+        <div className="flex flex-wrap gap-3 mt-6">
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#0B0E16] border border-[#7B2BFF]/30 rounded-lg">
+            <Code size={16} className="text-[#7B2BFF]" />
+            <span className="font-mono text-xs text-[#A7B0C8]">Coding</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#0B0E16] border border-[#00F0FF]/30 rounded-lg">
+            <Cpu size={16} className="text-[#00F0FF]" />
+            <span className="font-mono text-xs text-[#A7B0C8]">AI/ML</span>
+          </div>
+          <div className="flex items-center gap-2 px-4 py-2 bg-[#0B0E16] border border-[#FF2BD6]/30 rounded-lg">
+            <Palette size={16} className="text-[#FF2BD6]" />
+            <span className="font-mono text-xs text-[#A7B0C8]">Design</span>
+          </div>
+        </div>
+      </div>
+
+      {/* CTA - bottom right */}
+      <button
+        ref={ctaRef}
+        className="absolute right-[7vw] top-[86%] cyber-button z-20 group"
+        style={{ opacity: 0 }}
+      >
+        <span className="relative z-10 flex items-center gap-2">
+          View Tech Events
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </span>
+      </button>
+
+      {/* Sector label - bottom left */}
+      <span
+        ref={labelRef}
+        className="absolute left-[7vw] top-[86%] font-mono text-xs text-[#A7B0C8]/60 tracking-widest z-20"
+        style={{ opacity: 0 }}
+      >
+        SECTOR 01
+      </span>
+
+      {/* Decorative elements */}
+      <div className="absolute top-1/4 right-[10vw] w-px h-32 bg-linear-to-b from-transparent via-[#7B2BFF]/50 to-transparent" />
+      <div className="absolute bottom-1/4 left-[15vw] w-px h-24 bg-linear-to-b from-transparent via-[#00F0FF]/30 to-transparent" />
+    </section>
+  );
+}
