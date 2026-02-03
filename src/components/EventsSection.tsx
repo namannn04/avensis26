@@ -8,91 +8,122 @@ gsap.registerPlugin(ScrollTrigger);
 const categories = [
   { id: 'all', label: 'All', icon: null },
   { id: 'tech', label: 'Tech', icon: Code },
-  { id: 'esports', label: 'Esports', icon: Gamepad2 },
+  { id: 'gaming', label: 'Esports', icon: Gamepad2 },
   { id: 'robotics', label: 'Robotics', icon: Cpu },
-  { id: 'cultural', label: 'Cultural', icon: Music },
-  { id: 'valentine', label: 'Valentine', icon: Heart },
+  { id: 'funactivity', label: 'Fun & Activity', icon: Heart },
 ];
 
 const events = [
   {
     id: 1,
-    title: 'CodeStorm Hackathon',
-    description: '24-hour coding marathon. Build, innovate, and compete for the ultimate prize.',
+    title: 'CodeCubicle',
+    description: 'Solve algorithmic problems, optimize your code, and compete for the top spot.',
     category: 'tech',
     image: '/event_hackathon.jpg',
     tags: ['Competition', '24 Hours'],
   },
   {
     id: 2,
-    title: 'AI Neural Wars',
-    description: 'Battle of AI models. Train, optimize, and dominate the leaderboard.',
+    title: 'Hackwie 4.0',
+    description: 'Empower, innovate, and build solutions together in a celebration of women in tech.',
     category: 'tech',
     image: '/event_ai.jpg',
     tags: ['AI/ML', 'Competition'],
   },
   {
     id: 3,
-    title: 'UI/UX Forge',
+    title: 'Uxccelerate',
     description: 'Design competition for the next generation of digital experiences.',
     category: 'tech',
     image: '/event_design.jpg',
     tags: ['Design', 'Workshop'],
   },
   {
-    id: 4,
-    title: 'BGMI Cyber Cup',
-    description: 'Squad up and battle for glory in the ultimate mobile esports tournament.',
-    category: 'esports',
+    id: 4,  
+    title: 'CTF',
+    description: 'Test your cybersecurity skills, solve challenges, and capture the flag before your rivals.',
+    category: 'tech',
     image: '/event_bgmi.jpg',
     tags: ['Esports', '₹50K Prize'],
   },
   {
     id: 5,
-    title: 'Valorant Showdown',
-    description: 'Precision, strategy, and clutch plays. The arena awaits agents.',
-    category: 'esports',
+    title: 'Chess Tournament',
+    description: 'Outsmart your opponents, plan your moves, and claim the checkmate.',
+    category: 'gaming',
     image: '/event_valorant.jpg',
     tags: ['Esports', '₹75K Prize'],
   },
   {
     id: 6,
-    title: 'RoboRace Grand Prix',
-    description: 'High-speed autonomous racing. Build the fastest bot and claim victory.',
-    category: 'robotics',
-    image: '/event_roborace.jpg',
-    tags: ['Robotics', 'Racing'],
+    title: 'Clash Royale',
+    description: 'Build your deck, outsmart your opponent, and battle for the crown in real-time strategy duels.',
+    category: 'gaming',
+    image: '/event_clashroyale.jpg',
+    tags: ['Esports', 'Racing'],
   },
   {
     id: 7,
-    title: 'Mech Warriors',
-    description: 'Robot combat arena. Design, build, and destroy the competition.',
-    category: 'robotics',
-    image: '/event_robotics.jpg',
-    tags: ['Robotics', 'Combat'],
+    title: 'BGMI Tournament',
+    description: 'Squad up and battle for glory in the ultimate mobile esports tournament.',
+    category: 'gaming',
+    image: '/event_bgmi.jpg',
+    tags: ['Esports', 'Combat'],
   },
   {
     id: 8,
-    title: 'Neon Pulse Dance',
-    description: 'Cyberpunk-themed dance competition under the laser lights.',
-    category: 'cultural',
-    image: '/event_dance.jpg',
-    tags: ['Dance', 'Show'],
+    title: 'Robosoccer',
+    description: 'Robotic soccer match where bots battle it out on the field.',
+    category: 'robotics',
+    image: '/event_robotics.jpg',
+    tags: ['Robotics', 'Show'],
   },
   {
     id: 9,
-    title: 'Sound Rebellion',
-    description: 'Live music night featuring the best college bands and artists.',
-    category: 'cultural',
+    title: 'Roborace',
+    description: 'Autonomous robots race against each other in a thrilling test of speed and engineering.',
+    category: 'robotics',
     image: '/event_music.jpg',
     tags: ['Music', 'Live'],
   },
   {
     id: 10,
-    title: 'Cybernetic Hearts',
-    description: 'Valentine special: Tech meets romance in this unique celebration.',
-    category: 'valentine',
-    image: '/event_valentine.jpg',
+    title: 'Roboforge',
+    description: 'Showcase your engineering skills by building and battling custom robots in a creative robotics challenge.',
+    category: 'robotics',
+    image: '/robotics.jpg',
+    tags: ['Special', 'Feb 14'],
+  },
+  {
+    id: 11,
+    title: 'Ace and Chaos',
+    description: 'A high-energy card and strategy game event where luck and skill collide for chaotic fun.',
+    category: 'funactivity',
+    image: '/event_aceandchaos.jpg',
+    tags: ['Special', 'Feb 14'],
+  },
+  {
+    id: 12,
+    title: 'Murder Mystery',
+    description: 'Unravel clues and solve the mystery in this thrilling whodunit experience.',
+    category: 'funactivity',
+    image: '/event_murdermystery.jpg',
+    tags: ['Special', 'Feb 14'],
+  },
+  {
+    id: 13,
+    title: 'Hands off Standstill',
+    description: 'Test your patience and precision—keep your hands off and see who stands still the longest.',
+    category: 'funactivity',
+    image: '/event_handsoffstandstill.jpg',
+    tags: ['Special', 'Feb 14'],
+  },
+  {
+    id: 14,
+    title: 'Cup Challenge',
+    description: 'Compete in a fast-paced cup stacking challenge—speed and accuracy win the day.',
+    category: 'funactivity',
+    image: '/event_cupchallenge.jpg',
     tags: ['Special', 'Feb 14'],
   },
 ];
@@ -200,7 +231,7 @@ export default function EventsSection() {
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-sm tracking-wider transition-all duration-300 ${
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full font-mono text-sm tracking-wider transition-all duration-300 cursor-pointer ${
                   activeCategory === cat.id
                     ? 'bg-[#7B2BFF] text-white border-glow'
                     : 'bg-[#0B0E16] text-[#A7B0C8] border border-white/10 hover:border-[#7B2BFF]/50'
@@ -253,10 +284,6 @@ export default function EventsSection() {
                 <p className="font-inter text-sm text-[#A7B0C8] leading-relaxed mb-4 line-clamp-2">
                   {event.description}
                 </p>
-                <button className="flex items-center gap-2 font-mono text-xs text-[#7B2BFF] group-hover:text-[#00F0FF] transition-colors">
-                  Details
-                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                </button>
               </div>
             </div>
           ))}
