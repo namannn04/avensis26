@@ -215,7 +215,7 @@ export default function ValentineSection() {
       <div className="absolute left-1/2 top-[90%] -translate-x-1/2 flex gap-6 z-20">
         <div className="flex items-center gap-2 px-4 py-2 bg-[#0B0E16]/80 border border-[#FF2BD6]/30 rounded-lg backdrop-blur-sm">
           <Calendar size={16} className="text-[#FF2BD6]" />
-          <span className="font-mono text-xs text-[#A7B0C8]">Feb 14-20</span>
+          <span className="font-mono text-xs text-[#A7B0C8]">Feb 12-13</span>
         </div>
         <div className="flex items-center gap-2 px-4 py-2 bg-[#0B0E16]/80 border border-[#7B2BFF]/30 rounded-lg backdrop-blur-sm">
           <Gift size={16} className="text-[#7B2BFF]" />

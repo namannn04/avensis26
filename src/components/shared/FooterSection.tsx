@@ -231,7 +231,7 @@ export default function FooterSection() {
               © AVENSIS'26, MSIT. All rights reserved.
             </p>
             <p className="font-mono text-xs text-[#A7B0C8]/60">
-              Designed with <span className="text-[#FF2BD6]">♥</span> for the future
+              Designed with <span className="text-[#FF2BD6]">♥</span> by Naman for the future
             </p>
           </div>
         </div>

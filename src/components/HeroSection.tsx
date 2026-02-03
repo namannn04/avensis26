@@ -241,7 +241,7 @@ export default function HeroSection() {
         <p className="font-mono text-xs text-[#A7B0C8] leading-relaxed">
           <span className="text-[#7B2BFF]">{'>'}</span> Two days of tech, competition, and culture.
           <br />
-          <span className="text-[#00F0FF]">{'>'}</span> Feb 20–21, 2026
+          <span className="text-[#00F0FF]">{'>'}</span> Feb 12–13, 2026
         </p>
       </div>
 
