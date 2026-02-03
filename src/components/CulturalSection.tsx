@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Music, Mic, Drama, Sparkles } from 'lucide-react';
@@ -12,6 +12,26 @@ export default function CulturalSection() {
   const descriptorRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   const particlesRef = useRef<HTMLDivElement>(null);
+  
+  // Generate particles on client-side only to avoid hydration mismatch
+  const [particles, setParticles] = useState<Array<{
+    left: string;
+    top: string;
+    duration: number;
+    delay: number;
+  }>>([]);
+
+  useEffect(() => {
+    // Generate random particles only on client
+    setParticles(
+      Array.from({ length: 20 }, () => ({
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        duration: 3 + Math.random() * 4,
+        delay: Math.random() * 2,
+      }))
+    );
+  }, []);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -113,15 +133,15 @@ export default function CulturalSection() {
     >
       {/* Floating particles */}
       <div ref={particlesRef} className="absolute inset-0 pointer-events-none" style={{ opacity: 0 }}>
-        {[...Array(20)].map((_, i) => (
+        {particles.map((particle, i) => (
           <div
             key={i}
             className="absolute w-1 h-1 bg-[#FF2BD6]/40 rounded-full"
             style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animation: `float-particle ${3 + Math.random() * 4}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 2}s`,
+              left: particle.left,
+              top: particle.top,
+              animation: `float-particle ${particle.duration}s ease-in-out infinite`,
+              animationDelay: `${particle.delay}s`,
             }}
           />
         ))}

@@ -1,4 +1,4 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Heart, Calendar, Gift, Music } from 'lucide-react';
@@ -12,6 +12,28 @@ export default function ValentineSection() {
   const heartRef = useRef<HTMLImageElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
   const circuitRef = useRef<HTMLDivElement>(null);
+
+  // Generate hearts on client-side only to avoid hydration mismatch
+  const [hearts, setHearts] = useState<Array<{
+    size: number;
+    left: string;
+    top: string;
+    duration: number;
+    delay: number;
+  }>>([]);
+
+  useEffect(() => {
+    // Generate random hearts only on client
+    setHearts(
+      Array.from({ length: 8 }, () => ({
+        size: 12 + Math.random() * 16,
+        left: `${10 + Math.random() * 80}%`,
+        top: `${10 + Math.random() * 80}%`,
+        duration: 4 + Math.random() * 3,
+        delay: Math.random() * 3,
+      }))
+    );
+  }, []);
 
   useLayoutEffect(() => {
     const section = sectionRef.current;
@@ -217,16 +239,16 @@ export default function ValentineSection() {
 
       {/* Floating hearts */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(8)].map((_, i) => (
+        {hearts.map((heart, i) => (
           <Heart
             key={i}
-            size={12 + Math.random() * 16}
+            size={heart.size}
             className="absolute text-[#FF2BD6]/20"
             style={{
-              left: `${10 + Math.random() * 80}%`,
-              top: `${10 + Math.random() * 80}%`,
-              animation: `float-heart ${4 + Math.random() * 3}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 3}s`,
+              left: heart.left,
+              top: heart.top,
+              animation: `float-heart ${heart.duration}s ease-in-out infinite`,
+              animationDelay: `${heart.delay}s`,
             }}
           />
         ))}
