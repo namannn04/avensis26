@@ -43,7 +43,7 @@ export default function Home() {
           snap: {
             snapTo: (value: number) => {
               const inPinned = pinnedRanges.some(
-                (r: any) => value >= r.start - 0.02 && value <= r.end + 0.02
+                (r: any) => value >= r.start - 0.15 && value <= r.end + 0.15
               );
               if (!inPinned) return value;
 
@@ -56,12 +56,12 @@ export default function Home() {
               );
               return target;
             },
-            duration: { min: 0.15, max: 0.35 },
+            duration: { min: 0.4, max: 0.8 },
             delay: 0,
-            ease: 'power2.out',
+            ease: 'power3.inOut',
           },
         });
-      }, 500);
+      }, 800);
 
       return () => {
         clearTimeout(timer);
