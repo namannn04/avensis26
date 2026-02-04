@@ -5,47 +5,77 @@ export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const robotRef = useRef<HTMLImageElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const card1Ref = useRef<HTMLDivElement>(null);
-  const card2Ref = useRef<HTMLDivElement>(null);
-  const card3Ref = useRef<HTMLDivElement>(null);
+  const blob1Ref = useRef<HTMLDivElement>(null);
+  const blob2Ref = useRef<HTMLDivElement>(null);
+  const blob3Ref = useRef<HTMLDivElement>(null);
+  const floatBox1Ref = useRef<HTMLDivElement>(null);
+  const floatBox2Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'back.out' } });
+      const tl = gsap.timeline({ defaults: { ease: 'elastic.out' } });
 
-      // Robot explosion entrance with massive scale
+      // Robot wild entrance - super bouncy
       tl.fromTo(
         robotRef.current,
-        { y: 300, scale: 0.3, opacity: 0, rotation: -45 },
-        { y: 0, scale: 1, opacity: 1, rotation: 0, duration: 1.2 },
+        { y: 400, scale: 0, opacity: 0, rotation: -180 },
+        { y: 0, scale: 1, opacity: 1, rotation: 0, duration: 1.5 },
         0
       );
 
-      // Title with dramatic skew
+      // Title with crazy glitch entrance
       tl.fromTo(
         titleRef.current,
-        { x: -150, skewY: 15, opacity: 0 },
-        { x: 0, skewY: 0, opacity: 1, duration: 1 },
-        0.15
+        { x: -300, skewX: 45, opacity: 0, rotation: 20 },
+        { x: 0, skewX: 0, opacity: 1, rotation: 0, duration: 1.2 },
+        0.2
       );
 
-      // Floating cards with stagger and rotation
-      [card1Ref, card2Ref, card3Ref].forEach((ref, i) => {
-        tl.fromTo(
-          ref.current,
-          { y: 150 + i * 30, x: -100 + i * 50, opacity: 0, rotation: 20 - i * 10 },
-          { y: 0, x: 0, opacity: 1, rotation: 0, duration: 0.8 },
-          0.35 + i * 0.12
-        );
-      });
+      // Blobs cascade in from different angles
+      tl.fromTo(
+        blob1Ref.current,
+        { x: -200, y: -200, scale: 0, opacity: 0 },
+        { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.9 },
+        0.3
+      );
+
+      tl.fromTo(
+        blob2Ref.current,
+        { x: 300, y: 150, scale: 0, opacity: 0 },
+        { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.9 },
+        0.4
+      );
+
+      tl.fromTo(
+        blob3Ref.current,
+        { x: -150, y: 250, scale: 0, opacity: 0 },
+        { x: 0, y: 0, scale: 1, opacity: 1, duration: 0.9 },
+        0.5
+      );
+
+      // Float boxes slide in from sides
+      tl.fromTo(
+        floatBox1Ref.current,
+        { x: -500, opacity: 0, rotation: -45 },
+        { x: 0, opacity: 1, rotation: 0, duration: 0.8 },
+        0.4
+      );
+
+      tl.fromTo(
+        floatBox2Ref.current,
+        { x: 500, opacity: 0, rotation: 45 },
+        { x: 0, opacity: 1, rotation: 0, duration: 0.8 },
+        0.5
+      );
     }, sectionRef);
 
-    // Continuous subtle float animation
+    // Continuous crazy animations
     gsap.to(robotRef.current, {
-      y: -15,
-      duration: 5,
+      y: -25,
+      rotation: 5,
+      duration: 4,
       repeat: -1,
       yoyo: true,
       ease: 'sine.inOut',
@@ -57,108 +87,120 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen bg-[#05060B] overflow-hidden pt-24 md:pt-0 md:flex items-center justify-center"
+      className="relative w-full min-h-screen bg-[#05060B] overflow-hidden pt-32 md:pt-24 pb-16"
     >
-      {/* Animated radial background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/4 left-1/3 w-[500px] h-[500px] bg-[#7B2BFF]/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-[600px] h-[600px] bg-[#00F0FF]/15 rounded-full blur-3xl" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 right-1/3 w-[400px] h-[400px] bg-[#FF2BD6]/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+      {/* Crazy morphing blobs background */}
+      <div className="absolute inset-0 -z-20 overflow-hidden">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-[#7B2BFF]/40 morph-blob blur-3xl" />
+        <div className="absolute top-1/3 -right-60 w-80 h-80 bg-[#FF2BD6]/30 morph-blob blur-3xl" style={{ animationDelay: '2s' }} />
+        <div className="absolute -bottom-32 left-1/4 w-96 h-96 bg-[#00FF88]/25 morph-blob blur-3xl" style={{ animationDelay: '4s' }} />
       </div>
 
       <div className="w-full px-4 md:px-8 max-w-7xl mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-0 items-center min-h-screen md:min-h-fit">
-          {/* Left side - Overlapping tilted cards */}
-          <div className="relative h-96 md:h-full md:pr-8">
-            {/* Big title */}
+        {/* Radical asymmetric layout */}
+        <div className="relative min-h-[90vh] flex items-center">
+          {/* Left side - HUGE title breaking bounds */}
+          <div className="absolute left-0 top-0 w-full md:w-2/3 h-full flex flex-col justify-center">
             <h1
               ref={titleRef}
-              className="font-orbitron font-black text-6xl sm:text-7xl md:text-8xl text-[#F4F6FF] tracking-tighter leading-none mb-8 md:mb-12 relative z-30"
+              className="font-orbitron font-black text-[clamp(48px, 12vw, 180px)] leading-[0.9] text-[#F4F6FF] tracking-tighter z-20 color-shift-text"
               style={{ opacity: 0 }}
             >
               AVENSIS
               <br />
-              <span className="text-[#7B2BFF]">{'\''}26</span>
+              <span className="inline-block">
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#FF2BD6] via-[#00FF88] to-[#00F0FF]">
+                  {'\''}26
+                </span>
+              </span>
             </h1>
 
-            {/* Card 1 - Tilted left */}
-            <div
-              ref={card1Ref}
-              className="absolute top-20 md:top-32 -left-4 md:left-0 w-72 md:w-80 bg-gradient-to-br from-[#7B2BFF]/25 via-[#FF2BD6]/15 to-transparent border border-[#7B2BFF]/40 backdrop-blur-xl px-6 md:px-8 py-5 md:py-6 rounded-2xl transform -rotate-3 hover:rotate-0 hover:scale-105 transition-all duration-500 cursor-pointer z-20 shadow-2xl"
-              style={{ opacity: 0 }}
-            >
-              <div className="font-orbitron text-xs md:text-sm text-[#7B2BFF] font-bold tracking-wider mb-2">
-                SYSTEM STATUS
-              </div>
-              <p className="font-inter text-sm md:text-base text-[#F4F6FF] font-semibold">
-                Enter the Future
+            {/* Subtitle with cool positioning */}
+            <div className="mt-8 max-w-md">
+              <p className="font-mono text-sm md:text-base text-[#00FF88] font-bold tracking-widest mb-3">
+                ► TWO DAYS • PURE CHAOS • INFINITE INNOVATION
               </p>
-              <p className="font-inter text-xs text-[#A7B0C8] mt-3">
-                Two days of pure innovation
+              <p className="font-inter text-[#A7B0C8] text-base md:text-lg leading-relaxed">
+                Where the brightest minds collide, code becomes art, and the impossible becomes inevitable.
               </p>
             </div>
 
-            {/* Card 2 - Centered tilted */}
-            <div
-              ref={card2Ref}
-              className="absolute top-48 md:top-64 left-8 md:left-16 w-72 md:w-80 bg-gradient-to-br from-[#00F0FF]/25 via-[#7B2BFF]/15 to-transparent border border-[#00F0FF]/40 backdrop-blur-xl px-6 md:px-8 py-5 md:py-6 rounded-2xl transform rotate-2 hover:rotate-0 hover:scale-105 transition-all duration-500 cursor-pointer z-10 shadow-2xl"
-              style={{ opacity: 0 }}
+            {/* CTA Button with wild style */}
+            <button
+              onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
+              className="mt-8 w-fit px-8 md:px-12 py-4 md:py-5 bg-gradient-to-r from-[#7B2BFF] to-[#FF2BD6] text-white font-orbitron font-bold text-base md:text-lg tracking-wider rounded-full hover:scale-110 hover:shadow-2xl hover:shadow-[#7B2BFF]/50 transition-all duration-300 cursor-pointer relative overflow-hidden group"
             >
-              <div className="font-mono text-[10px] md:text-xs text-[#00F0FF] font-bold tracking-wider mb-2">
-                {'{  TIMELINE  }'}
-              </div>
-              <p className="font-mono text-xs md:text-sm text-[#F4F6FF] font-bold">
-                Feb 12–13, 2026
-              </p>
-              <p className="font-mono text-[9px] md:text-xs text-[#A7B0C8] mt-3">
-                {'// Live in your city'}
-              </p>
-            </div>
-
-            {/* Card 3 - Tilted right with CTA */}
-            <div
-              ref={card3Ref}
-              className="absolute top-96 md:top-[480px] left-20 md:left-32 w-72 md:w-80 bg-gradient-to-br from-[#FF2BD6]/25 via-[#FFAA2B]/15 to-transparent border border-[#FF2BD6]/40 backdrop-blur-xl px-6 md:px-8 py-6 md:py-7 rounded-2xl transform -rotate-1 hover:rotate-0 hover:scale-105 transition-all duration-500 cursor-pointer z-10 shadow-2xl"
-              style={{ opacity: 0 }}
-            >
-              <button
-                onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
-                className="w-full cyber-button text-sm md:text-base py-3"
-              >
-                <span className="relative z-10 flex items-center justify-center gap-2">
-                  Explore the Universe →
-                </span>
-              </button>
-            </div>
+              <span className="relative z-10 flex items-center gap-2">
+                JUMP IN →
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-[#FF2BD6] to-[#7B2BFF] opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-full" style={{ zIndex: -1 }} />
+            </button>
           </div>
 
-          {/* Right side - Robot with neon glow */}
-          <div className="relative h-96 md:h-full flex items-center justify-center md:justify-start pl-0 md:pl-8">
-            {/* Glow effect layers */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="absolute w-96 h-96 bg-[#7B2BFF]/30 rounded-full blur-3xl" />
-              <div className="absolute w-80 h-80 bg-[#00F0FF]/20 rounded-full blur-2xl" style={{ animationDelay: '0.5s' }} />
-            </div>
-
-            {/* Robot image */}
+          {/* Right side - Robot + floating elements */}
+          <div className="absolute right-0 top-0 w-full md:w-1/2 h-full flex items-center justify-center md:justify-end md:pr-8">
+            {/* Robot with intense glow */}
             <img
               ref={robotRef}
               src="/hero_robot.png"
               alt="Futuristic Robot"
-              className="w-full max-w-sm h-auto object-contain relative z-10 drop-shadow-2xl"
-              style={{ opacity: 0, filter: 'drop-shadow(0 0 60px rgba(123, 43, 255, 0.6)) drop-shadow(0 0 30px rgba(0, 240, 255, 0.4))' }}
+              className="w-full max-w-xs md:max-w-md h-auto object-contain relative z-10"
+              style={{
+                opacity: 0,
+                filter: 'drop-shadow(0 0 80px rgba(123, 43, 255, 0.8)) drop-shadow(0 0 40px rgba(0, 240, 255, 0.6)) drop-shadow(0 0 20px rgba(255, 43, 214, 0.4))',
+              }}
             />
           </div>
         </div>
+
+        {/* Floating boxes - positioned absolutely for crazy layout */}
+        <div
+          ref={floatBox1Ref}
+          className="absolute top-1/3 left-[5%] md:left-[15%] w-72 md:w-80 bg-gradient-to-br from-[#7B2BFF]/30 to-[#FF2BD6]/20 backdrop-blur-2xl border border-[#00FF88]/50 rounded-3xl p-6 md:p-8 shadow-2xl z-20 hover:scale-105 transition-transform duration-300 cursor-pointer"
+          style={{ opacity: 0 }}
+        >
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-[#00FF88]/30 flex items-center justify-center flex-shrink-0">
+              <span className="text-[#00FF88] font-bold">⚡</span>
+            </div>
+            <div>
+              <h3 className="font-orbitron font-bold text-[#F4F6FF] text-base">SYSTEM ONLINE</h3>
+              <p className="font-mono text-xs text-[#A7B0C8]">feb 12-13</p>
+            </div>
+          </div>
+          <p className="font-inter text-sm text-[#A7B0C8]">24 hours of pure innovation, competition, and absolute madness.</p>
+        </div>
+
+        <div
+          ref={floatBox2Ref}
+          className="absolute bottom-1/4 right-[5%] md:right-[10%] w-72 md:w-80 bg-gradient-to-br from-[#00F0FF]/30 to-[#7B2BFF]/20 backdrop-blur-2xl border border-[#FF2BD6]/50 rounded-3xl p-6 md:p-8 shadow-2xl z-20 hover:scale-105 transition-transform duration-300 cursor-pointer"
+          style={{ opacity: 0 }}
+        >
+          <div className="flex items-start gap-3 mb-4">
+            <div className="w-10 h-10 rounded-full bg-[#FF2BD6]/30 flex items-center justify-center flex-shrink-0">
+              <span className="text-[#FF2BD6] font-bold">🚀</span>
+            </div>
+            <div>
+              <h3 className="font-orbitron font-bold text-[#F4F6FF] text-base">LAUNCH SEQUENCE</h3>
+              <p className="font-mono text-xs text-[#A7B0C8]">Events Await</p>
+            </div>
+          </div>
+          <p className="font-inter text-sm text-[#A7B0C8]">12+ events across tech, gaming, robotics & chaos.</p>
+        </div>
+
+        {/* Morphing blob elements */}
+        <div ref={blob1Ref} className="absolute top-1/4 left-10 w-32 h-32 bg-[#7B2BFF]/20 morph-blob blur-3xl rounded-full" style={{ opacity: 0 }} />
+        <div ref={blob2Ref} className="absolute top-1/2 right-20 w-40 h-40 bg-[#FF2BD6]/15 morph-blob blur-3xl rounded-full" style={{ opacity: 0 }} />
+        <div ref={blob3Ref} className="absolute bottom-1/3 left-1/3 w-36 h-36 bg-[#00FF88]/15 morph-blob blur-3xl rounded-full" style={{ opacity: 0 }} />
       </div>
 
-      {/* Animated scroll indicator */}
-      <div className="absolute bottom-8 md:bottom-12 left-1/2 -translate-x-1/2 z-20">
-        <div className="flex flex-col items-center gap-3 animate-bounce">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#7B2BFF]">
+      {/* Crazy scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20">
+        <div className="flex flex-col items-center gap-2 animate-bounce">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-[#00FF88] animate-pulse">
             <polyline points="6 9 12 15 18 9"></polyline>
           </svg>
-          <div className="w-0.5 h-6 bg-gradient-to-b from-[#7B2BFF] to-transparent" />
+          <div className="w-1 h-8 bg-gradient-to-b from-[#00FF88] via-[#7B2BFF] to-transparent rounded-full" />
         </div>
       </div>
     </section>
