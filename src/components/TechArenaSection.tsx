@@ -163,7 +163,7 @@ export default function TechArenaSection() {
       </div>
 
       {/* Drone image - professional flexbox centering */}
-      <div className="absolute inset-0 flex items-center mt-96 justify-center z-10 pointer-events-none">
+      <div className="absolute inset-0 flex items-center md:mt-96 justify-center z-10 pointer-events-none">
         <img
           ref={droneRef}
           src="/tech_drone.png"
