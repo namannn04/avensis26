@@ -24,7 +24,7 @@ const events = [
   },
   {
     id: 2,
-    title: 'Hackwie 4.0',
+    title: 'HackAvensis',
     description: 'Empower, innovate, and build solutions together in a celebration of women in tech.',
     category: 'tech',
     image: '/event_ai.jpg',
