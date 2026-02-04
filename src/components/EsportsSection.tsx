@@ -45,20 +45,29 @@ export default function EsportsSection() {
         0.2
       );
 
-      // Controller bounces in
+      // Controller glitch effect
       tl.fromTo(
         controllerRef.current,
-        { scale: 0, opacity: 0, rotation: -180 },
-        { scale: 1, opacity: 1, rotation: 0, duration: 0.8 },
-        0.4
+        { scale: 0.5, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.8 },
+        0.3
       );
 
-      // VS blinks in
+      // Glitch shake effect
+      gsap.to(controllerRef.current, {
+        x: '3px',
+        duration: 0.04,
+        repeat: -1,
+        yoyo: true,
+        repeatDelay: 0.4,
+      });
+
+      // VS glitch text
       tl.fromTo(
         vsRef.current,
-        { scale: 0, opacity: 0 },
-        { scale: 1, opacity: 1, duration: 0.5 },
-        0.5
+        { opacity: 0, scale: 0.5 },
+        { opacity: 1, scale: 1, duration: 0.6 },
+        0.4
       );
     }, sectionRef);
 
@@ -68,84 +77,100 @@ export default function EsportsSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full min-h-screen py-16 md:py-24 bg-[#05060B] overflow-hidden flex items-center justify-center"
-      style={{ perspective: '1200px' }}
+      className="relative w-full min-h-screen py-20 md:py-32 bg-[#05060B] overflow-hidden"
     >
-      {/* Diagonal split background */}
+      {/* Glitch split background */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-1/2 left-0 w-[50%] h-full bg-gradient-to-r from-[#7B2BFF]/15 to-transparent" />
-        <div className="absolute top-1/2 right-0 w-[50%] h-full bg-gradient-to-l from-[#FF2BD6]/15 to-transparent" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#00F0FF]/30 rounded-full blur-3xl" />
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(255, 43, 214, 0.05) 25%, rgba(255, 43, 214, 0.05) 26%, transparent 27%, transparent 74%, rgba(255, 43, 214, 0.05) 75%, rgba(255, 43, 214, 0.05) 76%, transparent 77%, transparent)',
+            backgroundSize: '50px 50px',
+          }}
+        />
+        <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-[#7B2BFF]/20 to-transparent" />
+        <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-[#FF2BD6]/20 to-transparent" />
       </div>
 
-      <div className="relative z-10 px-4 md:px-8 w-full max-w-7xl mx-auto">
-        {/* Diagonal title */}
-        <div className="mb-20 md:mb-32 text-center" style={{ opacity: 0 }} ref={titleRef}>
+      <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* HUGE Glitch title */}
+        <div className="mb-20 md:mb-28 text-center" style={{ opacity: 0 }} ref={titleRef}>
           <h2 
-            className="font-orbitron font-black text-6xl md:text-8xl text-[#F4F6FF] tracking-tighter leading-none mb-4"
-            style={{ transform: 'skewX(-15deg)' }}
+            className="font-orbitron font-black text-7xl md:text-9xl text-[#F4F6FF] tracking-tighter leading-none mb-4"
+            style={{ textShadow: '6px 0px 0px #7B2BFF, -6px 0px 0px #FF2BD6' }}
           >
             ESPORTS
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#FF2BD6]">ZONE</span>
+            ZONE
           </h2>
-          <p className="font-mono text-sm md:text-base text-[#00FF88]">128 TEAMS | ₹1L+ PRIZE | LIVE CHAOS</p>
+          <p className="font-mono text-sm md:text-base text-[#FF2BD6] uppercase tracking-widest mt-6">128 TEAMS | ₹1L+ PRIZE POOL</p>
         </div>
 
-        {/* Diagonal battle layout */}
+        {/* Battle arena layout */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center">
-          {/* Left team cards - slides from left */}
+          {/* Left team - HUGE stats */}
           <div 
             ref={leftTeamRef}
-            className="space-y-4 md:space-y-6"
-            style={{ opacity: 0, perspective: '1000px' }}
+            className="space-y-6 md:space-y-8"
+            style={{ opacity: 0 }}
           >
-            <div className="p-6 md:p-8 rounded-2xl border-2 border-[#7B2BFF]/50 bg-[#0B0E16]/80 backdrop-blur-xl hover:scale-105 transition-transform duration-300" style={{ transform: 'rotateX(-5deg)' }}>
-              <Gamepad2 size={36} className="text-[#7B2BFF] mb-4" />
-              <h3 className="font-orbitron font-black text-3xl md:text-4xl text-[#7B2BFF] mb-2">128</h3>
-              <p className="font-inter text-sm text-[#A7B0C8]">Teams competing</p>
+            <div className="p-8 md:p-12 rounded-none border-4 border-[#7B2BFF]/60 bg-[#0B0E16]/85 backdrop-blur-xl group relative overflow-hidden cursor-pointer">
+              {/* Scan lines */}
+              <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(123, 43, 255, 0.1) 25%, rgba(123, 43, 255, 0.1) 26%, transparent 27%, transparent 74%, rgba(123, 43, 255, 0.1) 75%, rgba(123, 43, 255, 0.1) 76%, transparent 77%, transparent)', backgroundSize: '100% 4px' }} />
+              <div className="relative z-10">
+                <Gamepad2 size={48} className="text-[#7B2BFF] mb-6" />
+                <h3 className="font-orbitron font-black text-5xl md:text-6xl text-[#7B2BFF] mb-2 uppercase tracking-wider">128</h3>
+                <p className="font-inter text-base md:text-lg text-[#A7B0C8]">Teams Competing</p>
+              </div>
             </div>
-            <div className="p-6 md:p-8 rounded-2xl border-2 border-[#7B2BFF]/30 bg-[#0B0E16]/50 backdrop-blur-xl hover:border-[#7B2BFF]/60 transition-all duration-300" style={{ transform: 'rotateX(5deg)' }}>
-              <div className="text-sm md:text-base text-[#A7B0C8] font-mono">⚡ BATTLE ONLINE</div>
+            <div className="p-6 md:p-8 rounded-none border-2 border-[#7B2BFF]/30 bg-[#0B0E16]/60 backdrop-blur-xl">
+              <p className="font-mono text-xs md:text-sm text-[#7B2BFF] uppercase">✓ ONLINE BATTLES</p>
             </div>
           </div>
 
           {/* Center - Controller + VS */}
-          <div className="relative h-80 md:h-96 flex flex-col items-center justify-center">
-            {/* Controller */}
+          <div className="relative h-96 md:h-full min-h-96 flex flex-col items-center justify-center">
+            {/* Concentric circles */}
+            <div className="absolute w-80 h-80 border-4 border-[#00F0FF]/30 rounded-full" />
+            <div className="absolute w-64 h-64 border-2 border-[#FF2BD6]/20 rounded-full" />
+            
             <img
               ref={controllerRef}
               src="/esports_controller.png"
               alt="Gaming Controller"
-              className="w-32 md:w-40 h-auto object-contain z-20 mb-8"
-              style={{ opacity: 0, filter: 'drop-shadow(0 0 60px rgba(0, 240, 255, 0.6))' }}
+              className="w-56 md:w-72 h-auto object-contain relative z-10"
+              style={{ opacity: 0, filter: 'drop-shadow(0 0 80px rgba(0, 240, 255, 0.8)) drop-shadow(0 0 40px rgba(255, 43, 214, 0.6))' }}
             />
             
-            {/* VS text */}
+            {/* VS Glitch */}
             <div 
               ref={vsRef}
-              className="absolute"
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
               style={{ opacity: 0 }}
             >
-              <div className="font-orbitron font-black text-6xl md:text-8xl text-transparent bg-clip-text bg-gradient-to-r from-[#00F0FF] to-[#FF2BD6]" style={{ transform: 'skewX(-20deg)' }}>
-                VS
-              </div>
+              <h2 className="font-orbitron font-black text-8xl md:text-9xl text-[#F4F6FF]" style={{ textShadow: '6px 6px 0px #00F0FF, -6px -6px 0px #FF2BD6' }}>VS</h2>
             </div>
           </div>
 
-          {/* Right team cards - slides from right */}
+          {/* Right team - HUGE stats */}
           <div 
             ref={rightTeamRef}
-            className="space-y-4 md:space-y-6"
-            style={{ opacity: 0, perspective: '1000px' }}
+            className="space-y-6 md:space-y-8 text-right"
+            style={{ opacity: 0 }}
           >
-            <div className="p-6 md:p-8 rounded-2xl border-2 border-[#FF2BD6]/50 bg-[#0B0E16]/80 backdrop-blur-xl hover:scale-105 transition-transform duration-300 text-right" style={{ transform: 'rotateX(-5deg)' }}>
-              <Trophy size={36} className="text-[#FF2BD6] mb-4 ml-auto" />
-              <h3 className="font-orbitron font-black text-3xl md:text-4xl text-[#FF2BD6] mb-2">₹1L+</h3>
-              <p className="font-inter text-sm text-[#A7B0C8]">Prize pool</p>
+            <div className="p-8 md:p-12 rounded-none border-4 border-[#FF2BD6]/60 bg-[#0B0E16]/85 backdrop-blur-xl group relative overflow-hidden cursor-pointer">
+              {/* Scan lines */}
+              <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(255, 43, 214, 0.1) 25%, rgba(255, 43, 214, 0.1) 26%, transparent 27%, transparent 74%, rgba(255, 43, 214, 0.1) 75%, rgba(255, 43, 214, 0.1) 76%, transparent 77%, transparent)', backgroundSize: '100% 4px' }} />
+              <div className="relative z-10">
+                <div className="flex justify-end mb-6">
+                  <Trophy size={48} className="text-[#FF2BD6]" />
+                </div>
+                <h3 className="font-orbitron font-black text-5xl md:text-6xl text-[#FF2BD6] mb-2 uppercase tracking-wider">₹1L+</h3>
+                <p className="font-inter text-base md:text-lg text-[#A7B0C8]">Prize Pool</p>
+              </div>
             </div>
-            <div className="p-6 md:p-8 rounded-2xl border-2 border-[#FF2BD6]/30 bg-[#0B0E16]/50 backdrop-blur-xl hover:border-[#FF2BD6]/60 transition-all duration-300 text-right" style={{ transform: 'rotateX(5deg)' }}>
-              <div className="text-sm md:text-base text-[#A7B0C8] font-mono">📡 STREAMING LIVE</div>
+            <div className="p-6 md:p-8 rounded-none border-2 border-[#FF2BD6]/30 bg-[#0B0E16]/60 backdrop-blur-xl">
+              <p className="font-mono text-xs md:text-sm text-[#FF2BD6] uppercase">📡 LIVE STREAMING</p>
             </div>
           </div>
         </div>
