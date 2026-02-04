@@ -25,7 +25,7 @@ const events = [
   {
     id: 2,
     title: 'HackAvensis',
-    description: 'Empower, innovate, and build solutions together in a celebration of women in tech.',
+    description: 'Build innovative solutions to real-world problems in a 24 -hour hackathon.',
     category: 'tech',
     image: '/event_ai.jpg',
     tags: ['AI/ML', 'Competition'],
