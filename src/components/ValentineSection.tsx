@@ -212,7 +212,7 @@ export default function ValentineSection() {
       </div>
 
       {/* Event schedule preview */}
-      <div className="absolute left-1/2 top-[90%] -translate-x-1/2 flex gap-6 z-20">
+      <div className="absolute left-1/2 top-[85%] -translate-x-1/2 flex gap-6 z-20">
         <div className="flex items-center gap-2 px-4 py-2 bg-[#0B0E16]/80 border border-[#FF2BD6]/30 rounded-lg backdrop-blur-sm">
           <Calendar size={16} className="text-[#FF2BD6]" />
           <span className="font-mono text-xs text-[#A7B0C8]">Feb 12-13</span>
@@ -227,10 +227,10 @@ export default function ValentineSection() {
         </div>
       </div>
 
-      {/* CTA - bottom */}
+      {/* CTA - bottom right */}
       <button
         ref={ctaRef}
-        className="absolute left-1/2 top-[88%] -translate-x-1/2 cyber-button border-[#FF2BD6] z-20 group pulse-glow"
+        className="absolute right-[7vw] top-[86%] cyber-button border-[#FF2BD6] z-20 group pulse-glow"
         style={{ opacity: 0 }}
       >
         <span className="relative z-10 flex items-center gap-2">
