@@ -1,13 +1,14 @@
 import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { Zap, Code, Palette } from 'lucide-react';
+import { Code, Zap, Palette } from 'lucide-react';
 
 export default function TechArenaSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
-  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const droneRef = useRef<HTMLImageElement>(null);
-  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const card1Ref = useRef<HTMLDivElement>(null);
+  const card2Ref = useRef<HTMLDivElement>(null);
+  const card3Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -16,132 +17,131 @@ export default function TechArenaSection() {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top center',
-          end: 'bottom center',
+          start: 'top 60%',
           toggleActions: 'play none none reverse',
         },
       });
 
       tl.fromTo(
         titleRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 }
-      );
-
-      tl.fromTo(
-        descriptionRef.current,
-        { y: 30, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
-        0.1
+        { x: -100, skewY: 10, opacity: 0 },
+        { x: 0, skewY: 0, opacity: 1, duration: 0.8 },
+        0
       );
 
       tl.fromTo(
         droneRef.current,
-        { scale: 0.9, opacity: 0, x: 40 },
-        { scale: 1, opacity: 1, x: 0, duration: 0.6 },
-        0.2
+        { scale: 0.6, opacity: 0, rotation: -30 },
+        { scale: 1, opacity: 1, rotation: 0, duration: 0.9 },
+        0.1
       );
 
-      cardRefs.current.forEach((card, i) => {
-        if (card) {
-          tl.fromTo(
-            card,
-            { y: 20, opacity: 0 },
-            { y: 0, opacity: 1, duration: 0.5 },
-            0.3 + i * 0.1
-          );
-        }
+      [card1Ref, card2Ref, card3Ref].forEach((ref, i) => {
+        tl.fromTo(
+          ref.current,
+          { y: 100 + i * 40, x: 150 - i * 50, opacity: 0, rotation: -25 + i * 15 },
+          { y: 0, x: 0, opacity: 1, rotation: 0, duration: 0.7 },
+          0.2 + i * 0.15
+        );
       });
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  const categories = [
-    { icon: Code, label: 'Coding', color: '#7B2BFF' },
-    { icon: Zap, label: 'AI/ML', color: '#00F0FF' },
-    { icon: Palette, label: 'Design', color: '#FF2BD6' },
-  ];
-
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-16 md:py-24 bg-[#05060B] overflow-hidden"
+      className="relative w-full py-20 md:py-32 bg-[#05060B] overflow-hidden"
     >
-      <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-12 md:mb-16">
-          <h2
-            ref={titleRef}
-            className="font-orbitron font-black text-4xl md:text-5xl text-[#F4F6FF] tracking-tight text-glow-violet mb-4"
-            style={{ opacity: 0 }}
-          >
-            TECH ARENA
-          </h2>
-          <p
-            ref={descriptionRef}
-            className="font-inter text-[#A7B0C8] text-base md:text-lg max-w-2xl"
-            style={{ opacity: 0 }}
-          >
-            Hackathons. AI builds. UI wars. Compete for glory and prizes in the ultimate battleground of innovation.
-          </p>
-        </div>
+      {/* Background effects */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-1/2 left-1/4 w-96 h-96 bg-[#7B2BFF]/15 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-0 right-1/3 w-96 h-96 bg-[#00F0FF]/10 rounded-full blur-3xl" style={{ animationDelay: '1s' }} />
+      </div>
 
-        {/* Content grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-          {/* Left: Image */}
-          <div className="flex items-center justify-center order-2 md:order-1">
+      <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* Title - Large and skewed */}
+        <h2
+          ref={titleRef}
+          className="font-orbitron font-black text-5xl sm:text-6xl md:text-7xl text-[#F4F6FF] tracking-tighter mb-8 md:mb-16 leading-none"
+          style={{ opacity: 0 }}
+        >
+          TECH
+          <br />
+          <span className="text-[#7B2BFF]">ARENA</span>
+        </h2>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center">
+          {/* Left: Overlapping tilted cards */}
+          <div className="relative h-96 md:h-[500px]">
+            {/* Card 1 */}
+            <div
+              ref={card1Ref}
+              className="absolute top-0 left-0 w-72 md:w-80 bg-gradient-to-br from-[#7B2BFF]/30 to-[#00F0FF]/20 border border-[#7B2BFF]/50 backdrop-blur-xl rounded-3xl p-6 md:p-8 transform -rotate-6 hover:rotate-0 transition-all duration-500 z-30 shadow-2xl cursor-pointer"
+              style={{ opacity: 0 }}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-4 rounded-2xl bg-[#7B2BFF]/20">
+                  <Code size={28} className="text-[#7B2BFF]" />
+                </div>
+                <h3 className="font-orbitron font-bold text-xl text-[#F4F6FF]">CODING</h3>
+              </div>
+              <p className="font-inter text-sm text-[#A7B0C8] leading-relaxed">
+                Hackathons & competitive coding battles. Win prizes and glory.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div
+              ref={card2Ref}
+              className="absolute top-24 left-16 w-72 md:w-80 bg-gradient-to-br from-[#00F0FF]/30 to-[#FF2BD6]/20 border border-[#00F0FF]/50 backdrop-blur-xl rounded-3xl p-6 md:p-8 transform rotate-3 hover:rotate-0 transition-all duration-500 z-20 shadow-2xl cursor-pointer"
+              style={{ opacity: 0 }}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-4 rounded-2xl bg-[#00F0FF]/20">
+                  <Zap size={28} className="text-[#00F0FF]" />
+                </div>
+                <h3 className="font-orbitron font-bold text-xl text-[#F4F6FF]">AI/ML</h3>
+              </div>
+              <p className="font-inter text-sm text-[#A7B0C8] leading-relaxed">
+                Machine learning challenges & AI model competitions.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div
+              ref={card3Ref}
+              className="absolute top-48 left-32 w-72 md:w-80 bg-gradient-to-br from-[#FF2BD6]/30 to-[#FFAA2B]/20 border border-[#FF2BD6]/50 backdrop-blur-xl rounded-3xl p-6 md:p-8 transform -rotate-2 hover:rotate-0 transition-all duration-500 z-10 shadow-2xl cursor-pointer"
+              style={{ opacity: 0 }}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-4 rounded-2xl bg-[#FF2BD6]/20">
+                  <Palette size={28} className="text-[#FF2BD6]" />
+                </div>
+                <h3 className="font-orbitron font-bold text-xl text-[#F4F6FF]">DESIGN</h3>
+              </div>
+              <p className="font-inter text-sm text-[#A7B0C8] leading-relaxed">
+                UI/UX design wars & creative visualization contests.
+              </p>
+            </div>
+          </div>
+
+          {/* Right: Drone image with massive glow */}
+          <div className="relative h-96 md:h-[500px] flex items-center justify-center">
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="absolute w-96 h-96 bg-gradient-to-r from-[#7B2BFF]/40 via-[#00F0FF]/30 to-[#FF2BD6]/20 rounded-full blur-3xl" />
+            </div>
             <img
               ref={droneRef}
               src="/tech_drone.png"
               alt="Tech Drone"
-              className="w-full max-w-xs md:max-w-sm h-auto object-contain floating"
-              style={{ opacity: 0 }}
+              className="w-full max-w-md h-auto object-contain relative z-10 drop-shadow-2xl"
+              style={{ opacity: 0, filter: 'drop-shadow(0 0 50px rgba(123, 43, 255, 0.5))' }}
             />
-          </div>
-
-          {/* Right: Categories */}
-          <div className="space-y-4 order-1 md:order-2">
-            {categories.map((cat, i) => {
-              const Icon = cat.icon;
-              return (
-                <div
-                  key={i}
-                  ref={(el) => {
-                    if (el) cardRefs.current[i] = el;
-                  }}
-                  className="cyber-card p-5 md:p-6 border-l-4 hover:scale-105 transition-transform duration-300"
-                  style={{
-                    opacity: 0,
-                    borderLeftColor: cat.color,
-                  }}
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="p-3 rounded-lg" style={{ backgroundColor: `${cat.color}15` }}>
-                      <Icon size={24} style={{ color: cat.color }} />
-                    </div>
-                    <div>
-                      <h3 className="font-orbitron font-bold text-[#F4F6FF] mb-1">
-                        {cat.label}
-                      </h3>
-                      <p className="font-inter text-sm text-[#A7B0C8]">
-                        {cat.label === 'Coding'
-                          ? 'Hackathons and coding competitions'
-                          : cat.label === 'AI/ML'
-                          ? 'AI and machine learning challenges'
-                          : 'UI/UX design competitions'}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
           </div>
         </div>
       </div>
-
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#7B2BFF]/5 rounded-full blur-3xl -z-10" />
     </section>
   );
 }
