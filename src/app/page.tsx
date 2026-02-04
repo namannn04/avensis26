@@ -9,6 +9,7 @@ import RoboRaceSection from '@/src/components/RoboRaceSection';
 import CulturalSection from '@/src/components/CulturalSection';
 import ValentineSection from '@/src/components/ValentineSection';
 import EventsSection from '@/src/components/EventsSection';
+import ScheduleSection from '@/src/components/ScheduleSection';
 import SponsorsSection from '@/src/components/SponsorsSection';
 import FooterSection from '@/src/components/shared/FooterSection';
 
@@ -115,6 +116,7 @@ export default function Home() {
         
         {/* Flowing sections */}
         <EventsSection />
+        <ScheduleSection />
         <SponsorsSection />
         <FooterSection />
       </main>
