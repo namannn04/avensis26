@@ -1,6 +1,7 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from '@/src/components/shared/Navigation';
 import HeroSection from '@/src/components/HeroSection';
 import TechArenaSection from '@/src/components/TechArenaSection';
@@ -12,102 +13,33 @@ import EventsSection from '@/src/components/EventsSection';
 import SponsorsSection from '@/src/components/SponsorsSection';
 import FooterSection from '@/src/components/shared/FooterSection';
 
+gsap.registerPlugin(ScrollTrigger);
+
 export default function Home() {
-  const mainRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    let ScrollTrigger: any;
-
-    // Dynamically import ScrollTrigger to avoid SSR issues
-    import('gsap/ScrollTrigger').then((module) => {
-      ScrollTrigger = module.ScrollTrigger;
-      gsap.registerPlugin(ScrollTrigger);
-
-      // Wait for all sections to mount before setting up global snap
-      const timer = setTimeout(() => {
-        const pinned = ScrollTrigger.getAll()
-          .filter((st: any) => st.vars.pin)
-          .sort((a: any, b: any) => a.start - b.start);
-        
-        const maxScroll = ScrollTrigger.maxScroll(window);
-        
-        if (!maxScroll || pinned.length === 0) return;
-
-        const pinnedRanges = pinned.map((st: any) => ({
-          start: st.start / maxScroll,
-          end: (st.end ?? st.start) / maxScroll,
-          center: (st.start + ((st.end ?? st.start) - st.start) * 0.5) / maxScroll,
-        }));
-
-        ScrollTrigger.create({
-          snap: {
-            snapTo: (value: number) => {
-              const inPinned = pinnedRanges.some(
-                (r: any) => value >= r.start - 0.15 && value <= r.end + 0.15
-              );
-              if (!inPinned) return value;
-
-              const target = pinnedRanges.reduce(
-                (closest: number, r: any) =>
-                  Math.abs(r.center - value) < Math.abs(closest - value)
-                    ? r.center
-                    : closest,
-                pinnedRanges[0]?.center ?? 0
-              );
-              return target;
-            },
-            duration: { min: 0.4, max: 0.8 },
-            delay: 0,
-            ease: 'power3.inOut',
-          },
-        });
-      }, 800);
-
-      return () => {
-        clearTimeout(timer);
-        ScrollTrigger.getAll().forEach((st: any) => st.kill());
-      };
-    });
+    // Smooth scroll behavior
+    window.scrollBehavior = 'smooth';
 
     return () => {
-      if (ScrollTrigger) {
-        ScrollTrigger.getAll().forEach((st: any) => st.kill());
-      }
+      ScrollTrigger.getAll().forEach((trigger: any) => trigger.kill());
     };
   }, []);
 
   return (
-    <div ref={mainRef} className="relative bg-[#05060B] min-h-screen">
-      {/* Grain overlay */}
-      <div className="grain-overlay" />
-      
-      {/* Scanline effect */}
-      <div className="scanline" />
+    <div className="relative bg-[#05060B] min-h-screen overflow-x-hidden">
+      {/* Scanline effect - subtle */}
+      <div className="fixed inset-0 pointer-events-none z-[9999] opacity-[0.02] bg-[linear-gradient(transparent_50%,rgba(123,43,255,0.05)_50%)] bg-size-[100%_4px]" />
       
       <Navigation />
       
       {/* Main content */}
       <main className="relative">
-        <div className="relative z-10">
-          <HeroSection />
-        </div>        
-        <div className="relative z-20">
-          <TechArenaSection />
-        </div>        
-        <div className="relative z-30">
-          <EsportsSection />
-        </div>        
-        <div className="relative z-40">
-          <RoboRaceSection />
-        </div>        
-        <div className="relative z-50">
-          <CulturalSection />
-        </div>        
-        <div className="relative z-60">
-          <ValentineSection />
-        </div>
-        
-        {/* Flowing sections */}
+        <HeroSection />
+        <TechArenaSection />
+        <EsportsSection />
+        <RoboRaceSection />
+        <CulturalSection />
+        <ValentineSection />
         <EventsSection />
         <SponsorsSection />
         <FooterSection />

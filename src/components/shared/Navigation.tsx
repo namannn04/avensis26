@@ -3,9 +3,9 @@ import { Menu, X } from 'lucide-react';
 
 const navItems = [
   { label: 'Events', href: '#events' },
-  { label: 'Schedule', href: '#schedule' },
-  { label: 'Sponsors', href: '#sponsors' },
-  { label: 'Register', href: '#register' },
+  { label: 'Tech Arena', href: '#tech' },
+  { label: 'Esports', href: '#esports' },
+  { label: 'More', href: '#sponsors' },
 ];
 
 export default function Navigation() {
@@ -14,7 +14,7 @@ export default function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
+      setIsScrolled(window.scrollY > 50);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -32,32 +32,32 @@ export default function Navigation() {
   return (
     <>
       <nav
-        className={`fixed top-0 left-0 right-0 z-100 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#05060B]/90 backdrop-blur-md border-b border-white/5'
+            ? 'bg-[#05060B]/95 backdrop-blur-lg border-b border-[#7B2BFF]/10'
             : 'bg-transparent'
         }`}
       >
-        <div className="w-full px-6 lg:px-12">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+        <div className="w-full px-4 md:px-8">
+          <div className="flex items-center justify-between h-14 md:h-16">
             {/* Logo */}
             <a
               href="#"
-              className="font-orbitron font-bold text-lg lg:text-xl tracking-wider text-[#F4F6FF] hover:text-[#7B2BFF] transition-colors"
+              className="font-orbitron font-bold text-base md:text-lg tracking-wider text-[#F4F6FF] hover:text-[#7B2BFF] transition-colors"
             >
               AVENSIS'<span className="text-[#7B2BFF]">26</span>
             </a>
 
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden sm:flex items-center gap-6 md:gap-8">
               {navItems.map((item) => (
                 <button
                   key={item.label}
                   onClick={() => scrollToSection(item.href)}
-                  className="font-mono text-xs tracking-widest text-[#A7B0C8] hover:text-[#F4F6FF] transition-colors relative group"
+                  className="font-mono text-[10px] md:text-xs tracking-widest text-[#A7B0C8] hover:text-[#7B2BFF] transition-colors relative group"
                 >
                   {item.label}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#7B2BFF] transition-all duration-300 group-hover:w-full" />
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#7B2BFF] transition-all duration-300 group-hover:w-full" />
                 </button>
               ))}
             </div>
@@ -65,35 +65,31 @@ export default function Navigation() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-[#F4F6FF] hover:text-[#7B2BFF] transition-colors"
+              className="sm:hidden p-2 text-[#F4F6FF] hover:text-[#7B2BFF] transition-colors"
+              aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
           </div>
         </div>
       </nav>
 
       {/* Mobile Menu */}
-      <div
-        className={`fixed inset-0 z-99 bg-[#05060B]/98 backdrop-blur-lg transition-all duration-500 md:hidden ${
-          isMobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-        }`}
-      >
-        <div className="flex flex-col items-center justify-center h-full gap-8">
-          {navItems.map((item, index) => (
-            <button
-              key={item.label}
-              onClick={() => scrollToSection(item.href)}
-              className="font-orbitron text-2xl tracking-wider text-[#F4F6FF] hover:text-[#7B2BFF] transition-colors"
-              style={{
-                animationDelay: `${index * 100}ms`,
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 bg-[#05060B] pt-20 sm:hidden">
+          <div className="flex flex-col items-center gap-6 p-6">
+            {navItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => scrollToSection(item.href)}
+                className="font-orbitron text-xl tracking-wider text-[#F4F6FF] hover:text-[#7B2BFF] transition-colors"
+              >
+                {item.label}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

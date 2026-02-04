@@ -1,268 +1,145 @@
-import { useEffect, useRef, useLayoutEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ChevronRight } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function HeroSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const robotRef = useRef<HTMLImageElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
-  const microcopyRef = useRef<HTMLDivElement>(null);
+  const subtitleRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLButtonElement>(null);
-  const wavesRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
-  // Auto-play entrance animation on load
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    if (!sectionRef.current) return;
 
-      // Robot entrance
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({ defaults: { ease: 'cubic.out' } });
+
+      // Stagger entrance animations
       tl.fromTo(
         robotRef.current,
-        { y: '18vh', scale: 0.92, opacity: 0 },
-        { y: '12vh', scale: 1, opacity: 1, duration: 0.9 },
+        { y: 60, scale: 0.85, opacity: 0 },
+        { y: 0, scale: 1, opacity: 1, duration: 0.8 },
+        0
+      );
+
+      tl.fromTo(
+        titleRef.current,
+        { y: 40, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
+        0.1
+      );
+
+      tl.fromTo(
+        taglineRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5 },
         0.2
       );
 
-      // Title character animation
-      if (titleRef.current) {
-        const chars = titleRef.current.querySelectorAll('.char');
-        tl.fromTo(
-          chars,
-          { y: 40, opacity: 0 },
-          { y: 0, opacity: 1, duration: 0.7, stagger: 0.02 },
-          0.3
-        );
-      }
-
-      // Tagline
       tl.fromTo(
-        taglineRef.current,
+        subtitleRef.current,
         { y: 20, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.5 },
-        0.6
+        0.25
       );
 
-      // Microcopy
-      tl.fromTo(
-        microcopyRef.current,
-        { x: -30, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5 },
-        0.7
-      );
-
-      // CTA
       tl.fromTo(
         ctaRef.current,
-        { x: 30, opacity: 0 },
-        { x: 0, opacity: 1, duration: 0.5 },
-        0.8
-      );
-
-      // Waves
-      tl.fromTo(
-        wavesRef.current,
-        { opacity: 0 },
-        { opacity: 0.25, duration: 0.8 },
-        0.4
+        { y: 20, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.5 },
+        0.3
       );
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
-  // Scroll-driven exit animation
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const ctx = gsap.context(() => {
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
-          onLeaveBack: () => {
-            // Reset all elements to visible when scrolling back to top
-            gsap.set([robotRef.current, titleRef.current, taglineRef.current, microcopyRef.current, ctaRef.current], {
-              opacity: 1,
-              x: 0,
-              y: 0,
-              scale: 1,
-            });
-          },
-        },
-      });
-
-      // ENTRANCE (0% - 30%): Hold - elements already visible from load animation
-      // SETTLE (30% - 70%): Hold
-
-      // EXIT (70% - 100%)
-      scrollTl.fromTo(
-        titleRef.current,
-        { y: 0, opacity: 1 },
-        { y: '-18vh', opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
-      scrollTl.fromTo(
-        taglineRef.current,
-        { y: 0, opacity: 1 },
-        { y: '-12vh', opacity: 0, ease: 'power2.in' },
-        0.72
-      );
-
-      scrollTl.fromTo(
-        robotRef.current,
-        { y: '12vh', scale: 1, opacity: 1 },
-        { y: '22vh', scale: 0.95, opacity: 0, ease: 'power2.in' },
-        0.7
-      );
-
-      scrollTl.fromTo(
-        microcopyRef.current,
-        { x: 0, opacity: 1 },
-        { x: '-8vw', opacity: 0, ease: 'power2.in' },
-        0.75
-      );
-
-      scrollTl.fromTo(
-        ctaRef.current,
-        { x: 0, opacity: 1 },
-        { x: '8vw', opacity: 0, ease: 'power2.in' },
-        0.75
-      );
-
-      scrollTl.fromTo(
-        wavesRef.current,
-        { opacity: 0.25 },
-        { opacity: 0, ease: 'power2.in' },
-        0.8
-      );
-    }, section);
-
-    return () => ctx.revert();
-  }, []);
-
-  const titleText = "AVENSIS'26";
-
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen bg-[#05060B] overflow-hidden"
+      className="relative w-full min-h-screen bg-[#05060B] overflow-hidden flex items-center justify-center py-16 md:py-0"
     >
-      {/* Background vignette */}
-      <div className="absolute inset-0 bg-radial-gradient from-transparent via-transparent to-black/80" />
-      
-      {/* Signal waves */}
-      <div
-        ref={wavesRef}
-        className="absolute inset-0 overflow-hidden opacity-0"
-      >
-        <svg
-          className="absolute w-[200%] h-full signal-wave"
-          viewBox="0 0 2000 800"
-          preserveAspectRatio="none"
-        >
-          <path
-            d="M0 400 Q 250 200, 500 400 T 1000 400 T 1500 400 T 2000 400"
-            fill="none"
-            stroke="url(#waveGradient)"
-            strokeWidth="2"
-            opacity="0.3"
-          />
-          <path
-            d="M0 450 Q 250 250, 500 450 T 1000 450 T 1500 450 T 2000 450"
-            fill="none"
-            stroke="url(#waveGradient)"
-            strokeWidth="1.5"
-            opacity="0.2"
-          />
-          <path
-            d="M0 350 Q 250 150, 500 350 T 1000 350 T 1500 350 T 2000 350"
-            fill="none"
-            stroke="url(#waveGradient)"
-            strokeWidth="1"
-            opacity="0.15"
-          />
-          <defs>
-            <linearGradient id="waveGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#7B2BFF" stopOpacity="0" />
-              <stop offset="50%" stopColor="#00F0FF" stopOpacity="1" />
-              <stop offset="100%" stopColor="#7B2BFF" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-        </svg>
+      {/* Animated background grid */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-[linear-gradient(0deg,transparent_24%,rgba(123,43,255,.05)_25%,rgba(123,43,255,.05)_26%,transparent_27%,transparent_74%,rgba(123,43,255,.05)_75%,rgba(123,43,255,.05)_76%,transparent_77%,transparent)] bg-[50px_50px]" />
       </div>
 
-      {/* Robot image - professional flexbox centering */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <img
-          ref={robotRef}
-          src="/hero_robot.png"
-          alt="Futuristic Robot"
-          className="w-[85vw] md:w-[62vw] max-w-225 h-auto object-contain floating"
-          style={{ opacity: 0 }}
-        />
+      {/* Content wrapper */}
+      <div ref={contentRef} className="relative z-10 w-full px-4 md:px-8 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          {/* Left: Text content */}
+          <div className="flex flex-col justify-center space-y-6 md:space-y-8">
+            <div>
+              <h1
+                ref={titleRef}
+                className="font-orbitron font-black text-[3rem] sm:text-5xl md:text-6xl text-[#F4F6FF] tracking-tight text-glow-violet mb-4"
+                style={{ opacity: 0 }}
+              >
+                AVENSIS{'\''}26
+              </h1>
+              <p
+                ref={taglineRef}
+                className="font-inter text-lg md:text-xl text-[#A7B0C8] font-light tracking-wide"
+                style={{ opacity: 0 }}
+              >
+                Enter the Future
+              </p>
+            </div>
+
+            <div
+              ref={subtitleRef}
+              className="space-y-2 md:space-y-3"
+              style={{ opacity: 0 }}
+            >
+              <p className="font-inter text-[#A7B0C8] text-sm md:text-base leading-relaxed">
+                Two days of cutting-edge technology, intense competition, and unforgettable cultural experiences.
+              </p>
+              <div className="flex items-center gap-3 text-[#7B2BFF] font-mono text-xs md:text-sm">
+                <span className="w-2 h-2 rounded-full bg-[#7B2BFF]" />
+                <span>February 12–13, 2026</span>
+              </div>
+            </div>
+
+            <button
+              ref={ctaRef}
+              onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
+              className="cyber-button w-fit px-8 py-3 text-sm md:text-base group"
+              style={{ opacity: 0 }}
+            >
+              <span className="relative z-10 flex items-center gap-2">
+                Explore Events
+                <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+              </span>
+            </button>
+          </div>
+
+          {/* Right: Robot image */}
+          <div className="flex items-center justify-center md:justify-end">
+            <img
+              ref={robotRef}
+              src="/hero_robot.png"
+              alt="Futuristic Robot"
+              className="w-full max-w-xs md:max-w-md h-auto object-contain floating"
+              style={{ opacity: 0 }}
+            />
+          </div>
+        </div>
       </div>
 
-      {/* Title */}
-      <h1
-        ref={titleRef}
-        className="absolute left-1/2 top-[14%] md:top-[14%] -translate-x-1/2 font-orbitron font-black text-[clamp(32px,6.2vw,96px)] text-[#F4F6FF] text-glow-violet tracking-[0.08em] md:tracking-[0.12em] z-20 whitespace-nowrap"
-      >
-        {titleText.split('').map((char, i) => (
-          <span key={i} className="char inline-block" style={{ opacity: 0 }}>
-            {char}
-          </span>
-        ))}
-      </h1>
-
-      {/* Tagline */}
-      <p
-        ref={taglineRef}
-        className="absolute left-1/2 top-[28%] md:top-[28%] -translate-x-1/2 font-inter font-medium text-[clamp(11px,1.4vw,20px)] text-[#A7B0C8] tracking-[0.15em] md:tracking-[0.3em] uppercase z-20"
-        style={{ opacity: 0 }}
-      >
-        Enter the Future
-      </p>
-
-      {/* Microcopy */}
-      <div
-        ref={microcopyRef}
-        className="absolute left-1/2 md:left-[6vw] top-[68%] md:top-[62%] -translate-x-1/2 md:translate-x-0 max-w-[85vw] md:max-w-[28vw] text-center md:text-left z-20"
-        style={{ opacity: 0 }}
-      >
-        <p className="font-mono text-[10px] md:text-xs text-[#A7B0C8] leading-relaxed">
-          <span className="text-[#7B2BFF]">{'>'}</span> Two days of tech, competition, and culture.
-          <br />
-          <span className="text-[#00F0FF]">{'>'}</span> Feb 12–13, 2026
-        </p>
+      {/* Scroll indicator */}
+      <div className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+        <span className="text-xs md:text-sm text-[#A7B0C8] font-mono">Scroll</span>
+        <div className="w-6 h-10 border border-[#7B2BFF]/40 rounded-full flex items-start justify-center p-2">
+          <div className="w-1 h-2 bg-[#7B2BFF] rounded-full animate-pulse" />
+        </div>
       </div>
 
-      {/* CTA Button */}
-      <button
-        ref={ctaRef}
-        className="absolute left-1/2 md:left-auto right-auto md:right-[6vw] top-[78%] md:top-[62%] -translate-x-1/2 md:translate-x-0 cyber-button z-20 group text-sm md:text-base"
-        style={{ opacity: 0 }}
-        onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })}
-      >
-        <span className="relative z-10 flex items-center gap-2">
-          Explore Events
-          <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </span>
-      </button>
-
-      {/* Decorative corner elements */}
-      <div className="absolute top-16 md:top-20 left-3 md:left-6 w-10 h-10 md:w-16 md:h-16 border-l-2 border-t-2 border-[#7B2BFF]/30" />
-      <div className="absolute top-16 md:top-20 right-3 md:right-6 w-10 h-10 md:w-16 md:h-16 border-r-2 border-t-2 border-[#7B2BFF]/30" />
-      <div className="absolute bottom-3 md:bottom-6 left-3 md:left-6 w-10 h-10 md:w-16 md:h-16 border-l-2 border-b-2 border-[#7B2BFF]/30" />
-      <div className="absolute bottom-3 md:bottom-6 right-3 md:right-6 w-10 h-10 md:w-16 md:h-16 border-r-2 border-b-2 border-[#7B2BFF]/30" />
+      {/* Decorative accent lines */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#7B2BFF]/20 to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#00F0FF]/20 to-transparent" />
     </section>
   );
 }

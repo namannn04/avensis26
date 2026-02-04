@@ -1,222 +1,147 @@
-import { useRef, useLayoutEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Cpu, Code, Palette } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
+import { Zap, Code, Palette } from 'lucide-react';
 
 export default function TechArenaSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const titleTechRef = useRef<HTMLDivElement>(null);
-  const titleArenaRef = useRef<HTMLDivElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const droneRef = useRef<HTMLImageElement>(null);
-  const descriptorRef = useRef<HTMLDivElement>(null);
-  const ctaRef = useRef<HTMLButtonElement>(null);
-  const labelRef = useRef<HTMLSpanElement>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+  useEffect(() => {
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
-      
-      const scrollTl = gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
+          trigger: sectionRef.current,
+          start: 'top center',
+          end: 'bottom center',
+          toggleActions: 'play none none reverse',
         },
       });
 
-      // ENTRANCE (0% - 30%)
-      scrollTl.fromTo(
-        titleTechRef.current,
-        { x: '-55vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
-        0
+      tl.fromTo(
+        titleRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 }
       );
 
-      scrollTl.fromTo(
-        titleArenaRef.current,
-        { x: '-55vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
-        0.05
-      );
-
-      scrollTl.fromTo(
-        droneRef.current,
-        { y: '76vh', scale: 0.85, rotate: -6, opacity: 0 },
-        { y: '24vh', scale: 1, rotate: 0, opacity: 1, ease: 'none' },
-        0
-      );
-
-      scrollTl.fromTo(
-        descriptorRef.current,
-        { x: '18vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
+      tl.fromTo(
+        descriptionRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
         0.1
       );
 
-      scrollTl.fromTo(
-        ctaRef.current,
-        { x: '18vw', opacity: 0 },
-        { x: 0, opacity: 1, ease: 'none' },
-        0.15
-      );
-
-      scrollTl.fromTo(
-        labelRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
+      tl.fromTo(
+        droneRef.current,
+        { scale: 0.9, opacity: 0, x: 40 },
+        { scale: 1, opacity: 1, x: 0, duration: 0.6 },
         0.2
       );
 
-      // SETTLE (30% - 70%): Hold positions
-
-      // EXIT (70% - 100%) - Desktop only
-      if (!isMobile) {
-        scrollTl.fromTo(
-          titleTechRef.current,
-          { x: 0, opacity: 1 },
-          { x: '-22vw', opacity: 0, ease: 'power2.in' },
-          0.7
-        );
-
-        scrollTl.fromTo(
-          titleArenaRef.current,
-          { x: 0, opacity: 1 },
-          { x: '-22vw', opacity: 0, ease: 'power2.in' },
-          0.72
-        );
-
-        scrollTl.fromTo(
-          droneRef.current,
-          { y: '6vh', scale: 1, opacity: 1 },
-          { y: '28vh', scale: 0.92, opacity: 0, ease: 'power2.in' },
-          0.7
-        );
-
-        scrollTl.fromTo(
-          descriptorRef.current,
-          { x: 0, opacity: 1 },
-          { x: '10vw', opacity: 0, ease: 'power2.in' },
-          0.75
-        );
-
-        scrollTl.fromTo(
-          ctaRef.current,
-          { x: 0, opacity: 1 },
-          { x: '10vw', opacity: 0, ease: 'power2.in' },
-          0.78
-        );
-
-        scrollTl.fromTo(
-          labelRef.current,
-          { opacity: 1 },
-          { opacity: 0, ease: 'power2.in' },
-          0.8
-        );
-      }
-    }, section);
+      cardRefs.current.forEach((card, i) => {
+        if (card) {
+          tl.fromTo(
+            card,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5 },
+            0.3 + i * 0.1
+          );
+        }
+      });
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
+  const categories = [
+    { icon: Code, label: 'Coding', color: '#7B2BFF' },
+    { icon: Zap, label: 'AI/ML', color: '#00F0FF' },
+    { icon: Palette, label: 'Design', color: '#FF2BD6' },
+  ];
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen bg-[#05060B] overflow-hidden hex-grid"
+      className="relative w-full py-16 md:py-24 bg-[#05060B] overflow-hidden"
     >
-      {/* Hex grid overlay */}
-      <div className="absolute inset-0 bg-linear-to-b from-[#05060B] via-transparent to-[#05060B]" />
+      <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-12 md:mb-16">
+          <h2
+            ref={titleRef}
+            className="font-orbitron font-black text-4xl md:text-5xl text-[#F4F6FF] tracking-tight text-glow-violet mb-4"
+            style={{ opacity: 0 }}
+          >
+            TECH ARENA
+          </h2>
+          <p
+            ref={descriptionRef}
+            className="font-inter text-[#A7B0C8] text-base md:text-lg max-w-2xl"
+            style={{ opacity: 0 }}
+          >
+            Hackathons. AI builds. UI wars. Compete for glory and prizes in the ultimate battleground of innovation.
+          </p>
+        </div>
 
-      {/* Title stack - left side on desktop, centered on mobile */}
-      <div
-        ref={titleTechRef}
-        className="absolute left-1/2 md:left-[7vw] top-[14%] md:top-[18%] -translate-x-1/2 md:translate-x-0 z-20 text-center md:text-left"
-        style={{ opacity: 0 }}
-      >
-        <h2 className="font-orbitron font-black text-[clamp(40px,7.5vw,120px)] text-[#F4F6FF] tracking-widest text-glow-violet">
-          TECH
-        </h2>
-      </div>
-
-      <div
-        ref={titleArenaRef}
-        className="absolute left-1/2 md:left-[7vw] top-[24%] md:top-[32%] -translate-x-1/2 md:translate-x-0 z-20 text-center md:text-left"
-        style={{ opacity: 0 }}
-      >
-        <h2 className="font-orbitron font-black text-[clamp(40px,7.5vw,120px)] text-[#F4F6FF] tracking-widest text-glow-cyan">
-          ARENA
-        </h2>
-      </div>
-
-      {/* Drone image - professional flexbox centering */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <img
-          ref={droneRef}
-          src="/tech_drone.png"
-          alt="Tech Drone"
-          className="w-[80vw] md:w-[54vw] max-w-205 h-auto object-contain floating"
-          style={{ opacity: 0 }}
-        />
-      </div>
-
-      {/* Descriptor - right side on desktop, bottom on mobile */}
-      <div
-        ref={descriptorRef}
-        className="absolute left-1/2 md:left-[56vw] top-[72%] md:top-[26%] -translate-x-1/2 md:translate-x-0 w-[85vw] md:w-[38vw] z-20 text-center md:text-left"
-        style={{ opacity: 0 }}
-      >
-        <p className="font-inter text-[clamp(12px,1.2vw,18px)] text-[#A7B0C8] leading-relaxed">
-          Hackathons. AI builds. UI wars. Compete for glory and prizes in the ultimate
-          battleground of innovation.
-        </p>
-
-        {/* Event categories */}
-        <div className="flex flex-wrap justify-center md:justify-start gap-2 md:gap-3 mt-4 md:mt-6">
-          <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#0B0E16] border border-[#7B2BFF]/30 rounded-lg">
-            <Code size={14} className="text-[#7B2BFF]" />
-            <span className="font-mono text-[10px] md:text-xs text-[#A7B0C8]">Coding</span>
+        {/* Content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          {/* Left: Image */}
+          <div className="flex items-center justify-center order-2 md:order-1">
+            <img
+              ref={droneRef}
+              src="/tech_drone.png"
+              alt="Tech Drone"
+              className="w-full max-w-xs md:max-w-sm h-auto object-contain floating"
+              style={{ opacity: 0 }}
+            />
           </div>
-          <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#0B0E16] border border-[#00F0FF]/30 rounded-lg">
-            <Cpu size={14} className="text-[#00F0FF]" />
-            <span className="font-mono text-[10px] md:text-xs text-[#A7B0C8]">AI/ML</span>
-          </div>
-          <div className="flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#0B0E16] border border-[#FF2BD6]/30 rounded-lg">
-            <Palette size={14} className="text-[#FF2BD6]" />
-            <span className="font-mono text-[10px] md:text-xs text-[#A7B0C8]">Design</span>
+
+          {/* Right: Categories */}
+          <div className="space-y-4 order-1 md:order-2">
+            {categories.map((cat, i) => {
+              const Icon = cat.icon;
+              return (
+                <div
+                  key={i}
+                  ref={(el) => {
+                    if (el) cardRefs.current[i] = el;
+                  }}
+                  className="cyber-card p-5 md:p-6 border-l-4 hover:scale-105 transition-transform duration-300"
+                  style={{
+                    opacity: 0,
+                    borderLeftColor: cat.color,
+                  }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-lg" style={{ backgroundColor: `${cat.color}15` }}>
+                      <Icon size={24} style={{ color: cat.color }} />
+                    </div>
+                    <div>
+                      <h3 className="font-orbitron font-bold text-[#F4F6FF] mb-1">
+                        {cat.label}
+                      </h3>
+                      <p className="font-inter text-sm text-[#A7B0C8]">
+                        {cat.label === 'Coding'
+                          ? 'Hackathons and coding competitions'
+                          : cat.label === 'AI/ML'
+                          ? 'AI and machine learning challenges'
+                          : 'UI/UX design competitions'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
 
-      {/* CTA - bottom center on mobile, bottom right on desktop */}
-      <button
-        ref={ctaRef}
-        className="absolute left-1/2 md:left-auto right-auto md:right-[7vw] top-[88%] md:top-[86%] -translate-x-1/2 md:translate-x-0 cyber-button z-20 group text-sm md:text-base"
-        style={{ opacity: 0 }}
-      >
-        <span className="relative z-10 flex items-center gap-2">
-          View Tech Events
-          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-        </span>
-      </button>
-
-      {/* Sector label - bottom left */}
-      <span
-        ref={labelRef}
-        className="absolute left-[4vw] md:left-[7vw] top-[88%] md:top-[86%] font-mono text-[9px] md:text-xs text-[#A7B0C8]/60 tracking-widest z-20 hidden md:block"
-        style={{ opacity: 0 }}
-      >
-        SECTOR 01
-      </span>
-
-      {/* Decorative elements */}
-      <div className="absolute top-1/4 right-[10vw] w-px h-32 bg-linear-to-b from-transparent via-[#7B2BFF]/50 to-transparent" />
-      <div className="absolute bottom-1/4 left-[15vw] w-px h-24 bg-linear-to-b from-transparent via-[#00F0FF]/30 to-transparent" />
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#7B2BFF]/5 rounded-full blur-3xl -z-10" />
     </section>
   );
 }

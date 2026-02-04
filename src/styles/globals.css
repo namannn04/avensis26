@@ -286,12 +286,18 @@
   }
   
   .floating {
-    animation: floating 3.5s ease-in-out infinite;
+    animation: floating 4s ease-in-out infinite;
   }
   
   @keyframes floating {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+    0%, 100% { 
+      transform: translateY(0px);
+      animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    }
+    50% { 
+      transform: translateY(-15px);
+      animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    }
   }
   
   .pulse-glow {
@@ -299,8 +305,18 @@
   }
   
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(123, 43, 255, 0.4); }
-    50% { box-shadow: 0 0 40px rgba(123, 43, 255, 0.7); }
+    0%, 100% { 
+      box-shadow: 0 0 20px rgba(123, 43, 255, 0.4);
+    }
+    50% { 
+      box-shadow: 0 0 40px rgba(123, 43, 255, 0.7);
+    }
+  }
+
+  @supports (animation-timeline: view()) {
+    .floating {
+      animation: floating 4s ease-in-out infinite linear;
+    }
   }
 }
 

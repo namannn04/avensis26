@@ -1,277 +1,158 @@
-import { useRef, useLayoutEffect, useState, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Heart, Calendar, Gift, Music } from 'lucide-react';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function ValentineSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const taglineRef = useRef<HTMLParagraphElement>(null);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
   const heartRef = useRef<HTMLImageElement>(null);
-  const ctaRef = useRef<HTMLButtonElement>(null);
-  const circuitRef = useRef<HTMLDivElement>(null);
-
-  // Generate hearts on client-side only to avoid hydration mismatch
-  const [hearts, setHearts] = useState<Array<{
-    size: number;
-    left: string;
-    top: string;
-    duration: number;
-    delay: number;
-  }>>([]);
+  const itemRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
-    // Generate random hearts only on client
-    setHearts(
-      Array.from({ length: 8 }, () => ({
-        size: 12 + Math.random() * 16,
-        left: `${10 + Math.random() * 80}%`,
-        top: `${10 + Math.random() * 80}%`,
-        duration: 4 + Math.random() * 3,
-        delay: Math.random() * 3,
-      }))
-    );
-  }, []);
-
-  useLayoutEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      const isMobile = window.innerWidth < 768;
-      
-      const scrollTl = gsap.timeline({
+      const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: '+=130%',
-          pin: true,
-          scrub: 0.6,
+          trigger: sectionRef.current,
+          start: 'top center',
+          end: 'bottom center',
+          toggleActions: 'play none none reverse',
         },
       });
 
-      // ENTRANCE (0% - 30%)
-      scrollTl.fromTo(
+      tl.fromTo(
         titleRef.current,
-        { y: '-28vh', opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
-        0
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 }
       );
 
-      scrollTl.fromTo(
+      tl.fromTo(
         taglineRef.current,
-        { y: '-20vh', opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
-        0.05
-      );
-
-      scrollTl.fromTo(
-        heartRef.current,
-        { y: '60vh', scale: 0.7, opacity: 0 },
-        { y: '8vh', scale: 1, opacity: 1, ease: 'none' },
-        0
-      );
-
-      scrollTl.fromTo(
-        circuitRef.current,
-        { opacity: 0 },
-        { opacity: 1, ease: 'none' },
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
         0.1
       );
 
-      scrollTl.fromTo(
-        ctaRef.current,
-        { y: 20, opacity: 0 },
-        { y: 0, opacity: 1, ease: 'none' },
+      tl.fromTo(
+        descriptionRef.current,
+        { y: 30, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.6 },
+        0.15
+      );
+
+      tl.fromTo(
+        heartRef.current,
+        { scale: 0.9, opacity: 0, y: 40 },
+        { scale: 1, opacity: 1, y: 0, duration: 0.6 },
         0.2
       );
 
-      // SETTLE (30% - 70%): Hold
-
-      // EXIT (70% - 100%) - Desktop only
-      if (!isMobile) {
-        scrollTl.fromTo(
-          titleRef.current,
-          { y: 0, opacity: 1 },
-          { y: '-12vh', opacity: 0, ease: 'power2.in' },
-          0.7
-        );
-
-        scrollTl.fromTo(
-          taglineRef.current,
-          { opacity: 1 },
-          { opacity: 0, ease: 'power2.in' },
-          0.72
-        );
-
-        scrollTl.fromTo(
-          heartRef.current,
-          { y: '8vh', scale: 1, opacity: 1 },
-          { y: '22vh', scale: 0.92, opacity: 0, ease: 'power2.in' },
-          0.7
-        );
-
-        scrollTl.fromTo(
-          circuitRef.current,
-          { opacity: 1 },
-          { opacity: 0, ease: 'power2.in' },
-          0.75
-        );
-
-        scrollTl.fromTo(
-          ctaRef.current,
-          { opacity: 1 },
-          { opacity: 0, ease: 'power2.in' },
-          0.8
-        );
-      }
-    }, section);
+      itemRefs.current.forEach((item, i) => {
+        if (item) {
+          tl.fromTo(
+            item,
+            { y: 20, opacity: 0 },
+            { y: 0, opacity: 1, duration: 0.5 },
+            0.3 + i * 0.1
+          );
+        }
+      });
+    }, sectionRef);
 
     return () => ctx.revert();
   }, []);
 
+  const items = [
+    { icon: Calendar, label: 'Feb 12-13', description: 'Two days of celebration', color: '#FF2BD6' },
+    { icon: Gift, label: 'Surprises', description: 'Special rewards and gifts', color: '#7B2BFF' },
+    { icon: Music, label: 'Live Music', description: 'Amazing performances', color: '#00F0FF' },
+  ];
+
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-screen bg-[#05060B] overflow-hidden"
+      className="relative w-full py-16 md:py-24 bg-[#05060B] overflow-hidden"
     >
-      {/* Circuit traces background */}
-      <div
-        ref={circuitRef}
-        className="absolute inset-0 pointer-events-none"
-        style={{ opacity: 0 }}
-      >
-        <svg
-          className="absolute inset-0 w-full h-full opacity-20"
-          viewBox="0 0 1920 1080"
-          fill="none"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          {/* Circuit paths */}
-          <path
-            d="M 200 540 L 400 540 L 450 490 L 550 490"
-            stroke="#FF2BD6"
-            strokeWidth="2"
-            fill="none"
-            strokeDasharray="10 5"
-          />
-          <path
-            d="M 1720 540 L 1520 540 L 1470 490 L 1370 490"
-            stroke="#FF2BD6"
-            strokeWidth="2"
-            fill="none"
-            strokeDasharray="10 5"
-          />
-          <path
-            d="M 200 600 L 350 600 L 400 650 L 500 650"
-            stroke="#7B2BFF"
-            strokeWidth="1.5"
-            fill="none"
-            strokeDasharray="8 4"
-          />
-          <path
-            d="M 1720 600 L 1570 600 L 1520 650 L 1420 650"
-            stroke="#7B2BFF"
-            strokeWidth="1.5"
-            fill="none"
-            strokeDasharray="8 4"
-          />
-          {/* Nodes */}
-          <circle cx="400" cy="540" r="6" fill="#FF2BD6" />
-          <circle cx="1520" cy="540" r="6" fill="#FF2BD6" />
-          <circle cx="350" cy="600" r="4" fill="#7B2BFF" />
-          <circle cx="1570" cy="600" r="4" fill="#7B2BFF" />
-        </svg>
-      </div>
-
-      {/* Title - top center */}
-      <h2
-        ref={titleRef}
-        className="absolute left-1/2 top-[12%] md:top-[14%] -translate-x-1/2 font-orbitron font-black text-[clamp(28px,5vw,80px)] text-[#F4F6FF] tracking-[0.08em] md:tracking-[0.12em] text-glow-magenta z-20 whitespace-nowrap px-4"
-        style={{ opacity: 0 }}
-      >
-        VALENTINE WEEK
-      </h2>
-
-      {/* Tagline */}
-      <p
-        ref={taglineRef}
-        className="absolute left-1/2 top-[22%] md:top-[26%] -translate-x-1/2 font-inter text-[clamp(11px,1.4vw,20px)] text-[#A7B0C8] tracking-[0.12em] md:tracking-[0.2em] uppercase z-20 px-4 text-center"
-        style={{ opacity: 0 }}
-      >
-        Where hearts sync with circuits
-      </p>
-
-      {/* Heart image - professional flexbox centering */}
-      <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-        <img
-          ref={heartRef}
-          src="/valentine_heart.png"
-          alt="Circuit Heart"
-          className="w-[75vw] md:w-[46vw] max-w-170 h-auto object-contain"
-          style={{ opacity: 0 }}
-        />
-      </div>
-
-      {/* Event schedule preview */}
-      <div className="absolute left-1/2 top-[82%] md:top-[85%] -translate-x-1/2 flex flex-wrap justify-center gap-3 md:gap-6 z-20 px-4">
-        <div className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#0B0E16]/80 border border-[#FF2BD6]/30 rounded-lg backdrop-blur-sm">
-          <Calendar size={14} className="text-[#FF2BD6]" />
-          <span className="font-mono text-[10px] md:text-xs text-[#A7B0C8]">Feb 12-13</span>
+      <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="mb-12 md:mb-16 text-center">
+          <h2
+            ref={titleRef}
+            className="font-orbitron font-black text-4xl md:text-5xl text-[#F4F6FF] tracking-tight text-glow-magenta mb-2"
+            style={{ opacity: 0 }}
+          >
+            VALENTINE WEEK
+          </h2>
+          <p
+            ref={taglineRef}
+            className="font-inter text-[#A7B0C8] text-base md:text-lg mb-4"
+            style={{ opacity: 0 }}
+          >
+            Where hearts sync with circuits
+          </p>
+          <p
+            ref={descriptionRef}
+            className="font-inter text-[#A7B0C8] text-sm md:text-base max-w-2xl mx-auto"
+            style={{ opacity: 0 }}
+          >
+            Celebrate love and connection with special events, surprises, and live performances during Valentine week.
+          </p>
         </div>
-        <div className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#0B0E16]/80 border border-[#7B2BFF]/30 rounded-lg backdrop-blur-sm">
-          <Gift size={14} className="text-[#7B2BFF]" />
-          <span className="font-mono text-[10px] md:text-xs text-[#A7B0C8]">Surprises</span>
-        </div>
-        <div className="flex items-center gap-1.5 md:gap-2 px-3 md:px-4 py-1.5 md:py-2 bg-[#0B0E16]/80 border border-[#00F0FF]/30 rounded-lg backdrop-blur-sm">
-          <Music size={14} className="text-[#00F0FF]" />
-          <span className="font-mono text-[10px] md:text-xs text-[#A7B0C8]">Live Music</span>
+
+        {/* Content grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          {/* Left: Image */}
+          <div className="flex items-center justify-center">
+            <img
+              ref={heartRef}
+              src="/valentine_heart.png"
+              alt="Circuit Heart"
+              className="w-full max-w-xs md:max-w-sm h-auto object-contain floating"
+              style={{ opacity: 0 }}
+            />
+          </div>
+
+          {/* Right: Items */}
+          <div className="space-y-4">
+            {items.map((item, i) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={i}
+                  ref={(el) => {
+                    if (el) itemRefs.current[i] = el;
+                  }}
+                  className="cyber-card p-5 md:p-6 border-l-4 hover:scale-105 transition-transform duration-300"
+                  style={{
+                    opacity: 0,
+                    borderLeftColor: item.color,
+                  }}
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="p-3 rounded-lg" style={{ backgroundColor: `${item.color}15` }}>
+                      <Icon size={24} style={{ color: item.color }} />
+                    </div>
+                    <div>
+                      <h3 className="font-orbitron font-bold text-[#F4F6FF] mb-1">
+                        {item.label}
+                      </h3>
+                      <p className="font-inter text-sm text-[#A7B0C8]">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* CTA - bottom center on mobile, bottom right on desktop */}
-      <button
-        ref={ctaRef}
-        className="absolute left-1/2 md:left-auto right-auto md:right-[7vw] top-[92%] md:top-[86%] -translate-x-1/2 md:translate-x-0 cyber-button border-[#FF2BD6] z-20 group pulse-glow text-sm md:text-base"
-        style={{ opacity: 0 }}
-      >
-        <span className="relative z-10 flex items-center gap-2">
-          <Heart size={16} className="animate-pulse" />
-          Explore the Week
-        </span>
-      </button>
-
-      {/* Floating hearts */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {hearts.map((heart, i) => (
-          <Heart
-            key={i}
-            size={heart.size}
-            className="absolute text-[#FF2BD6]/20"
-            style={{
-              left: heart.left,
-              top: heart.top,
-              animation: `float-heart ${heart.duration}s ease-in-out infinite`,
-              animationDelay: `${heart.delay}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <style>{`
-        @keyframes float-heart {
-          0%, 100% { 
-            transform: translateY(0) scale(1);
-            opacity: 0.2;
-          }
-          50% { 
-            transform: translateY(-30px) scale(1.1);
-            opacity: 0.4;
-          }
-        }
-      `}</style>
+      {/* Background decoration */}
+      <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-[#FF2BD6]/5 rounded-full blur-3xl -z-10" />
     </section>
   );
 }
