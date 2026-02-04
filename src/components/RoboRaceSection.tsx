@@ -4,8 +4,9 @@ import { Zap, Clock, Route } from 'lucide-react';
 
 export default function RoboRaceSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
+  const titleRef = useRef<HTMLDivElement>(null);
   const vehicleRef = useRef<HTMLImageElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
   const specsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -22,23 +23,36 @@ export default function RoboRaceSection() {
 
       tl.fromTo(
         titleRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.6 },
+        { x: 200, skewX: 25, opacity: 0 },
+        { x: 0, skewX: 0, opacity: 1, duration: 1 },
         0
       );
 
       tl.fromTo(
         vehicleRef.current,
-        { x: -100, scale: 0.8, opacity: 0 },
-        { x: 0, scale: 1, opacity: 1, duration: 0.8 },
-        0.1
+        { x: -300, scale: 0.3, opacity: 0 },
+        { x: 0, scale: 1, opacity: 1, duration: 1 },
+        0.2
+      );
+
+      // Parallax speed effect on track
+      gsap.fromTo(
+        '.track-line',
+        { x: -500 },
+        {
+          x: 500,
+          duration: 3,
+          repeat: -1,
+          ease: 'none',
+          stagger: 0.1,
+        }
       );
 
       tl.fromTo(
         specsRef.current,
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.7 },
-        0.2
+        { opacity: 0, y: 50 },
+        { opacity: 1, y: 0, duration: 0.8 },
+        0.4
       );
     }, sectionRef);
 
@@ -48,72 +62,78 @@ export default function RoboRaceSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full py-24 md:py-40 bg-[#05060B] overflow-hidden"
+      className="relative w-full min-h-screen py-16 md:py-24 bg-[#05060B] overflow-hidden flex items-center justify-center"
     >
-      {/* Background effects - Racing atmosphere */}
+      {/* Diagonal racing atmosphere */}
       <div className="absolute inset-0 -z-10">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#FFAA2B]/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/3 left-1/4 w-80 h-80 bg-[#7B2BFF]/15 rounded-full blur-3xl" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#FFAA2B]/25 rounded-full blur-3xl" style={{ transform: 'skewX(-20deg)' }} />
+        <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#7B2BFF]/20 rounded-full blur-3xl animate-pulse" />
       </div>
 
-      <div className="relative z-10 px-4 md:px-8 max-w-7xl mx-auto">
-        {/* Title */}
-        <div className="mb-16 md:mb-24" style={{ opacity: 0 }} ref={titleRef}>
-          <h2 className="font-orbitron font-black text-5xl md:text-7xl text-[#F4F6FF] tracking-tighter mb-4">
-            ROBORACE TRACK
+      <div className="relative z-10 px-4 md:px-8 w-full max-w-7xl mx-auto">
+        {/* Skewed title */}
+        <div className="mb-16 md:mb-32" style={{ opacity: 0 }} ref={titleRef}>
+          <h2 
+            className="font-orbitron font-black text-6xl md:text-8xl text-[#F4F6FF] tracking-tighter leading-none mb-4"
+            style={{ transform: 'skewX(-18deg)' }}
+          >
+            ROBO
+            <br />
+            <span className="text-[#FFAA2B]">RACE</span>
           </h2>
-          <p className="font-inter text-lg md:text-xl text-[#A7B0C8] max-w-2xl">
-            Autonomous robots pushing the limits of speed and precision on the ultimate track.
-          </p>
+          <p className="font-mono text-xs md:text-sm text-[#FFAA2B] uppercase tracking-widest">120 km/h • 45.2s • 2.5km track</p>
         </div>
 
-        {/* Racing layout - horizontal showcase */}
-        <div className="relative">
-          {/* Motion lines effect */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gradient-to-r from-transparent via-[#FFAA2B]/30 to-transparent hidden md:block" />
-
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 md:gap-6 items-center">
-            {/* Vehicle - center focal point */}
-            <div className="relative h-80 md:h-96 lg:col-span-2 lg:col-start-2 flex items-center justify-center" style={{ opacity: 0 }}>
-              <div className="absolute w-96 h-96 bg-gradient-to-r from-[#FFAA2B]/30 via-[#7B2BFF]/20 to-transparent rounded-full blur-3xl" />
-              <img
-                ref={vehicleRef}
-                src="/roborace_vehicle.png"
-                alt="RoboRace Vehicle"
-                className="w-full max-w-md h-auto object-contain relative z-10"
-                style={{ opacity: 0, filter: 'drop-shadow(0 0 40px rgba(255, 170, 43, 0.4))' }}
-              />
-            </div>
-
-            {/* Specs - left and right of vehicle */}
-            <div ref={specsRef} className="lg:col-span-3 lg:col-start-1" style={{ opacity: 0 }}>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-                {[
-                  { icon: Clock, label: 'BEST TIME', value: '45.2s', color: '#FFAA2B' },
-                  { icon: Zap, label: 'MAX SPEED', value: '120 km/h', color: '#7B2BFF' },
-                  { icon: Route, label: 'TRACK', value: '2.5 km', color: '#00F0FF' },
-                ].map((spec, idx) => {
-                  const Icon = spec.icon;
-                  return (
-                    <div
-                      key={idx}
-                      className="p-6 md:p-8 rounded-2xl border border-[#7B2BFF]/20 bg-[#0B0E16]/50 backdrop-blur-xl hover:border-[#7B2BFF]/50 transition-all duration-300"
-                    >
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="p-3 rounded-lg flex-shrink-0" style={{ backgroundColor: `${spec.color}15` }}>
-                          <Icon size={24} style={{ color: spec.color }} />
-                        </div>
-                        <span className="font-mono text-xs text-[#A7B0C8]">{spec.label}</span>
-                      </div>
-                      <h3 className="font-orbitron font-bold text-2xl md:text-3xl" style={{ color: spec.color }}>
-                        {spec.value}
-                      </h3>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+        {/* Diagonal track visualization */}
+        <div ref={trackRef} className="relative mb-16 md:mb-20 h-40 md:h-56 overflow-hidden rounded-2xl border-2 border-[#FFAA2B]/40 bg-[#0B0E16]/60 backdrop-blur-xl">
+          {/* Moving track lines - parallax effect */}
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="track-line absolute w-[200%] h-1 bg-gradient-to-r from-transparent via-[#FFAA2B]/40 to-transparent"
+              style={{
+                top: `${(i * 100) / 8}%`,
+                transform: 'skewX(-30deg)',
+              }}
+            />
+          ))}
+          
+          {/* Center vehicle */}
+          <div className="absolute inset-0 flex items-center justify-center z-10">
+            <img
+              ref={vehicleRef}
+              src="/roborace_vehicle.png"
+              alt="RoboRace Vehicle"
+              className="w-32 md:w-48 h-auto object-contain"
+              style={{ opacity: 0, filter: 'drop-shadow(0 0 50px rgba(255, 170, 43, 0.6))' }}
+            />
           </div>
+        </div>
+
+        {/* Spec cards floating around */}
+        <div ref={specsRef} className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6" style={{ opacity: 0 }}>
+          {[
+            { icon: Clock, label: 'BEST TIME', value: '45.2s', color: '#FFAA2B', pos: 'rotate-3' },
+            { icon: Zap, label: 'MAX SPEED', value: '120 km/h', color: '#7B2BFF', pos: 'rotate-0' },
+            { icon: Route, label: 'TRACK LENGTH', value: '2.5 km', color: '#00F0FF', pos: '-rotate-3' },
+          ].map((spec, idx) => {
+            const Icon = spec.icon;
+            return (
+              <div
+                key={idx}
+                className={`p-6 md:p-8 rounded-2xl border-2 bg-[#0B0E16]/80 backdrop-blur-xl hover:scale-110 transition-transform duration-300 ${spec.pos}`}
+                style={{ borderColor: `${spec.color}60` }}
+              >
+                <div className="mb-4">
+                  <Icon size={32} style={{ color: spec.color }} />
+                </div>
+                <p className="font-mono text-xs text-[#A7B0C8] mb-2 uppercase tracking-wider">{spec.label}</p>
+                <h3 className="font-orbitron font-black text-3xl md:text-4xl" style={{ color: spec.color }}>
+                  {spec.value}
+                </h3>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
