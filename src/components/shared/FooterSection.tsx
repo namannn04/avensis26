@@ -12,12 +12,6 @@ const quickLinks = [
   { label: 'Register', href: '#register' },
 ];
 
-const legalLinks = [
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Terms of Service', href: '#' },
-  { label: 'Code of Conduct', href: '#' },
-];
-
 const socialLinks = [
   { icon: Instagram, href: '#', label: 'Instagram' },
   { icon: Twitter, href: '#', label: 'Twitter' },
@@ -123,7 +117,7 @@ export default function FooterSection() {
         className="relative border-t border-white/5 py-10 md:py-16 px-4 md:px-6 lg:px-12"
       >
         <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 mb-8 md:mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 mb-8 md:mb-12">
             {/* Brand */}
             <div className="text-center sm:text-left">
               <a href="#" className="font-orbitron font-bold text-xl md:text-2xl text-[#F4F6FF] mb-3 md:mb-4 block">
@@ -199,28 +193,9 @@ export default function FooterSection() {
                     href="tel:+911234567890"
                     className="font-inter text-xs md:text-sm text-[#A7B0C8] hover:text-[#7B2BFF] transition-colors"
                   >
-                    +91 12345 67890
+                    9992127106
                   </a>
                 </li>
-              </ul>
-            </div>
-
-            {/* Legal */}
-            <div className="text-center sm:text-left">
-              <h4 className="font-orbitron font-semibold text-xs md:text-sm text-[#F4F6FF] tracking-wider mb-4 md:mb-6">
-                LEGAL
-              </h4>
-              <ul className="space-y-2 md:space-y-3">
-                {legalLinks.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="font-inter text-xs md:text-sm text-[#A7B0C8] hover:text-[#7B2BFF] transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
               </ul>
             </div>
           </div>
