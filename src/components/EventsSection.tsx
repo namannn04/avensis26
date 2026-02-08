@@ -20,7 +20,8 @@ const events = [
     description: 'Solve algorithmic problems, optimize your code, and compete for the top spot.',
     category: 'tech',
     image: '/event_hackathon.jpg',
-    tags: ['Competition', '24 Hours'],
+    // tags: ['Competition', '24 Hours'],
+    registerLink: '#codecubicle',
   },
   {
     id: 2,
@@ -28,71 +29,80 @@ const events = [
     description: 'Build innovative solutions to real-world problems in a 24 -hour hackathon.',
     category: 'tech',
     image: '/event_ai.jpg',
-    tags: ['AI/ML', 'Competition'],
+    // tags: ['AI/ML', 'Competition'],
+    registerLink: '#hackavensis',
   },
   {
     id: 3,
     title: 'Uxccelerate',
     description: 'Design competition for the next generation of digital experiences.',
     category: 'tech',
-    image: '/event_design.jpg',
-    tags: ['Design', 'Workshop'],
+    image: '/UxCelebrate.jpeg',
+    // tags: ['Design', 'Workshop'],
+    registerLink: 'https://unstop.com/p/uxcelebrate-2026-msit-1636032',
   },
   {
     id: 4,  
     title: 'CTF',
     description: 'Test your cybersecurity skills, solve challenges, and capture the flag before your rivals.',
     category: 'tech',
-    image: '/event_bgmi.jpg',
-    tags: ['Esports', '₹50K Prize'],
+    image: '/ctf.jpeg',
+    // tags: ['CTF', '₹10K Prize'],
+    registerLink: 'https://tinyurl.com/o-day-legion',
   },
   {
     id: 5,
     title: 'Chess Tournament',
     description: 'Outsmart your opponents, plan your moves, and claim the checkmate.',
     category: 'gaming',
-    image: '/event_valorant.jpg',
-    tags: ['Esports', '₹75K Prize'],
+    image: '/chess.jpeg',
+    // tags: ['Esports', 'Chess'],
+    registerLink: 'https://forms.gle/2EqUH7Hnz6LLiK5x7',
   },
   {
     id: 6,
-    title: 'Clash Royale',
+    title: 'Crown War',
     description: 'Build your deck, outsmart your opponent, and battle for the crown in real-time strategy duels.',
     category: 'gaming',
-    image: '/event_clashroyale.jpg',
-    tags: ['Esports', 'Racing'],
+    image: '/clashroyale.jpeg',
+    // tags: ['Esports', 'Racing'],
+    registerLink: 'https://forms.gle/g43ugQ3UrJycky4r5',
   },
   {
     id: 7,
-    title: 'BGMI Tournament',
+    title: 'KillFeast',
     description: 'Squad up and battle for glory in the ultimate mobile esports tournament.',
     category: 'gaming',
-    image: '/event_bgmi.jpg',
-    tags: ['Esports', 'Combat'],
+    image: '/bgmi.jpeg',
+    // tags: ['Esports', 'Combat'],
+    registerLink: 'https://forms.gle/vFcWCFNJF6Nvyy1YA',
   },
   {
     id: 8,
     title: 'Robosoccer',
     description: 'Robotic soccer match where bots battle it out on the field.',
     category: 'robotics',
-    image: '/event_robotics.jpg',
-    tags: ['Robotics', 'Show'],
+    image: '/robosoccer.jpeg',
+    // tags: ['Robotics', 'Show'],
+    registerLink: 'https://docs.google.com/forms/d/e/1FAIpQLSfusGSvqwObmI_pquQn_5_8ubQ2kvuRH57TXgfldawQASIrPA/viewform',
   },
   {
     id: 9,
     title: 'Roborace',
     description: 'Autonomous robots race against each other in a thrilling test of speed and engineering.',
     category: 'robotics',
-    image: '/event_music.jpg',
-    tags: ['Music', 'Live'],
+    image: '/roborace.jpeg',
+    // tags: ['Music', 'Live'],
+    registerLink: 'https://docs.google.com/forms/d/e/1FAIpQLSdLU7-QOmOglTFu700QLXMpgx2gCmEbcN-IyOOt6Ko-2Uiqug/viewform',
   },
   {
     id: 10,
     title: 'Roboforge',
     description: 'Showcase your engineering skills by building and battling custom robots in a creative robotics challenge.',
     category: 'robotics',
-    image: '/robotics.jpg',
-    tags: ['Special', 'Feb 14'],
+    image: '/roboforge.jpeg',
+    // tags: ['Special', 'Feb 14'],
+    registerLink: 'https://docs.google.com/forms/d/e/1FAIpQLSdzEVq-3sE-BLL3MIbj-ewHXrl3DEx71_pEn9LywXQFJDQ3zQ/viewform',
   },
   {
     id: 11,
@@ -100,7 +110,8 @@ const events = [
     description: 'A high-energy card and strategy game event where luck and skill collide for chaotic fun.',
     category: 'funactivity',
     image: '/event_aceandchaos.jpg',
-    tags: ['Special', 'Feb 14'],
+    // tags: ['Special', 'Feb 14'],
+    registerLink: '#aceandchaos',
   },
   {
     id: 12,
@@ -108,7 +119,8 @@ const events = [
     description: 'Unravel clues and solve the mystery in this thrilling whodunit experience.',
     category: 'funactivity',
     image: '/event_murdermystery.jpg',
-    tags: ['Special', 'Feb 14'],
+    // tags: ['Special', 'Feb 14'],
+    registerLink: '#murdermystery',
   },
   {
     id: 13,
@@ -116,7 +128,8 @@ const events = [
     description: 'Test your patience and precision—keep your hands off and see who stands still the longest.',
     category: 'funactivity',
     image: '/event_handsoffstandstill.jpg',
-    tags: ['Special', 'Feb 14'],
+    // tags: ['Special', 'Feb 14'],
+    registerLink: '#handsoffstandstill',
   },
   {
     id: 14,
@@ -124,7 +137,8 @@ const events = [
     description: 'Compete in a fast-paced cup stacking challenge—speed and accuracy win the day.',
     category: 'funactivity',
     image: '/event_cupchallenge.jpg',
-    tags: ['Special', 'Feb 14'],
+    // tags: ['Special', 'Feb 14'],
+    registerLink: '#cupchallenge',
   },
 ];
 
@@ -268,15 +282,15 @@ export default function EventsSection() {
         {/* Events grid */}
         <div
           ref={gridRef}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"
+          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 md:gap-4"
         >
           {displayedEvents.map((event) => (
             <div
               key={event.id}
-              className="event-card cyber-card group cursor-pointer"
+              className="event-card cyber-card group relative"
             >
               {/* Image */}
-              <div className="relative aspect-16/10 overflow-hidden">
+              <div className="relative aspect-9/16 overflow-hidden">
                 <img
                   src={event.image}
                   alt={event.title}
@@ -285,7 +299,7 @@ export default function EventsSection() {
                 <div className="absolute inset-0 bg-linear-to-t from-[#05060B] via-transparent to-transparent" />
                 
                 {/* Tags */}
-                <div className="absolute bottom-2 md:bottom-3 left-2 md:left-3 flex gap-1.5 md:gap-2">
+                {/* <div className="absolute bottom-2 md:bottom-3 left-2 md:left-3 flex gap-1.5 md:gap-2 z-20">
                   {event.tags.map((tag, i) => (
                     <span
                       key={i}
@@ -294,17 +308,28 @@ export default function EventsSection() {
                       {tag}
                     </span>
                   ))}
-                </div>
+                </div> */}
+                {/* Overlay moved to bottom, pointer-events-none */}
+                <div className="absolute inset-0 bg-linear-to-t from-[#05060B] via-transparent to-transparent pointer-events-none z-0" />
               </div>
 
               {/* Content */}
-              <div className="p-4 md:p-5">
+              <div className="p-4 md:p-5 z-20 relative">
                 <h3 className="font-orbitron font-bold text-base md:text-lg text-[#F4F6FF] mb-2 group-hover:text-[#7B2BFF] transition-colors">
                   {event.title}
                 </h3>
-                <p className="font-inter text-xs md:text-sm text-[#A7B0C8] leading-relaxed mb-4 line-clamp-2">
+                <p className="font-inter text-xs md:text-sm text-[#A7B0C8] leading-relaxed mb-3 line-clamp-2">
                   {event.description}
                 </p>
+                <a
+                  href={event.registerLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-linear-to-r from-[#7B2BFF] to-[#9D4EDD] text-white text-xs font-mono font-bold rounded-md hover:from-[#9D4EDD] hover:to-[#7B2BFF] transition-all duration-300 border border-[#7B2BFF]/50 hover:border-[#9D4EDD] hover:shadow-[0_0_15px_rgba(123,43,255,0.5)]"
+                >
+                  <span>REGISTER</span>
+                  <ArrowRight size={14} />
+                </a>
               </div>
             </div>
           ))}

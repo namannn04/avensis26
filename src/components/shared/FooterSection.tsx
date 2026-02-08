@@ -13,10 +13,7 @@ const quickLinks = [
 ];
 
 const socialLinks = [
-  { icon: Instagram, href: '#', label: 'Instagram' },
-  { icon: Twitter, href: '#', label: 'Twitter' },
-  { icon: Youtube, href: '#', label: 'YouTube' },
-  { icon: Linkedin, href: '#', label: 'LinkedIn' },
+  { icon: Instagram, href: 'https://www.instagram.com/avensis_2k26?igsh=MTM5YnRqNGp4ejQwMg==', label: 'Instagram' },
 ];
 
 export default function FooterSection() {
