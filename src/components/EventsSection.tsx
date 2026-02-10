@@ -1,15 +1,15 @@
 import { useRef, useLayoutEffect, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ArrowRight, Code, Gamepad2, Cpu, Music, Heart } from 'lucide-react';
+import { ArrowRight, Code, Gamepad2, Cpu, Music, Heart, Phone } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const categories = [
   { id: 'all', label: 'All', icon: null },
   { id: 'tech', label: 'Tech', icon: Code },
-  { id: 'gaming', label: 'Esports', icon: Gamepad2 },
   { id: 'robotics', label: 'Robotics', icon: Cpu },
+  { id: 'gaming', label: 'Esports', icon: Gamepad2 },
   { id: 'funactivity', label: 'Fun & Activity', icon: Heart },
 ];
 
@@ -20,7 +20,8 @@ const events = [
     description: 'Build innovative solutions to real-world problems in a 24 -hour hackathon.',
     category: 'tech',
     image: '/hackavensis.jpeg',
-    // tags: ['AI/ML', 'Competition'],
+    coordinatorName: 'Biswamohan',
+    coordinatorPhone: '9599028140',
     registerLink: 'https://unstop.com/hackathons/hackavensis-maharaja-surajmal-institute-of-technology-msit-new-delhi-1635937',
   },
   {
@@ -29,7 +30,8 @@ const events = [
     description: 'Solve algorithmic problems, optimize your code, and compete for the top spot.',
     category: 'tech',
     image: '/algoquest.jpeg',
-    // tags: ['Competition', '24 Hours'],
+    coordinatorName: 'Apoorv',
+    coordinatorPhone: '8588948599',
     registerLink: 'https://unstop.com/p/algo-quest-msit-1636987',
   },
   {
@@ -38,7 +40,8 @@ const events = [
     description: 'Design competition for the next generation of digital experiences.',
     category: 'tech',
     image: '/UxCelebrate.jpeg',
-    // tags: ['Design', 'Workshop'],
+    coordinatorName: 'Arunima',
+    coordinatorPhone: '7056107000',
     registerLink: 'https://unstop.com/p/uxcelebrate-2026-msit-1636032',
   },
   {
@@ -47,7 +50,8 @@ const events = [
     description: 'Test your cybersecurity skills, solve challenges, and capture the flag before your rivals.',
     category: 'tech',
     image: '/ctf.jpeg',
-    // tags: ['CTF', '₹10K Prize'],
+    coordinatorName: 'Prakhar',
+    coordinatorPhone: '8810323877',
     registerLink: 'https://tinyurl.com/o-day-legion',
   },
   {
@@ -56,7 +60,8 @@ const events = [
     description: 'Robotic soccer match where bots battle it out on the field.',
     category: 'robotics',
     image: '/robosoccer.jpeg',
-    // tags: ['Robotics', 'Show'],
+    coordinatorName: 'Suhani',
+    coordinatorPhone: '9310548159',
     registerLink: 'https://docs.google.com/forms/d/e/1FAIpQLSfusGSvqwObmI_pquQn_5_8ubQ2kvuRH57TXgfldawQASIrPA/viewform',
   },
   {
@@ -65,7 +70,8 @@ const events = [
     description: 'Autonomous robots race against each other in a thrilling test of speed and engineering.',
     category: 'robotics',
     image: '/roborace.jpeg',
-    // tags: ['Music', 'Live'],
+    coordinatorName: 'Vansh',
+    coordinatorPhone: '9873733641',
     registerLink: 'https://docs.google.com/forms/d/e/1FAIpQLSdLU7-QOmOglTFu700QLXMpgx2gCmEbcN-IyOOt6Ko-2Uiqug/viewform',
   },
   {
@@ -74,7 +80,8 @@ const events = [
     description: 'Showcase your engineering skills by building and battling custom robots in a creative robotics challenge.',
     category: 'robotics',
     image: '/roboforge.jpeg',
-    // tags: ['Special', 'Feb 14'],
+    coordinatorName: 'Manaswin',
+    coordinatorPhone: '6239232874',
     registerLink: 'https://docs.google.com/forms/d/e/1FAIpQLSdzEVq-3sE-BLL3MIbj-ewHXrl3DEx71_pEn9LywXQFJDQ3zQ/viewform',
   },
   {
@@ -83,7 +90,8 @@ const events = [
     description: 'Outsmart your opponents, plan your moves, and claim the checkmate.',
     category: 'gaming',
     image: '/chess.jpeg',
-    // tags: ['Esports', 'Chess'],
+    coordinatorName: 'Dhruv Rankoti',
+    coordinatorPhone: '7042146657',
     registerLink: 'https://forms.gle/2EqUH7Hnz6LLiK5x7',
   },
   {
@@ -92,7 +100,8 @@ const events = [
     description: 'Build your deck, outsmart your opponent, and battle for the crown in real-time strategy duels.',
     category: 'gaming',
     image: '/clashroyale.jpeg',
-    // tags: ['Esports', 'Racing'],
+    coordinatorName: 'Ayush',
+    coordinatorPhone: '8745070041',
     registerLink: 'https://forms.gle/g43ugQ3UrJycky4r5',
   },
   {
@@ -101,7 +110,8 @@ const events = [
     description: 'Squad up and battle for glory in the ultimate mobile esports tournament.',
     category: 'gaming',
     image: '/bgmi.jpeg',
-    // tags: ['Esports', 'Combat'],
+    coordinatorName: 'Ayush Kumar Singh',
+    coordinatorPhone: '9546994272',
     registerLink: 'https://forms.gle/vFcWCFNJF6Nvyy1YA',
   },
   {
@@ -110,7 +120,8 @@ const events = [
     description: 'Gear up for the carnival. No teams, No mercy. Just fists, focus and flawless execution',
     category: 'gaming',
     image: '/tekken.jpeg',
-    // tags: ['Esports', 'Combat'],
+    coordinatorName: 'Ayush kumar ',
+    coordinatorPhone: '9718996607',
     registerLink: 'https://forms.gle/RfGzyJ31MuRCnW2dA',
   },
   {
@@ -119,16 +130,18 @@ const events = [
     description: 'A high-energy card and strategy game event where luck and skill collide for chaotic fun.',
     category: 'funactivity',
     image: '/aceandchaos.jpeg',
-    // tags: ['Special', 'Feb 14'],
+    coordinatorName: 'Shrey',
+    coordinatorPhone: '9717197035',
     registerLink: '#aceandchaos',
   },
   {
     id: 13,
-    title: 'Murder Mystery',
+    title: 'The Murder Dash',
     description: 'Unravel clues and solve the mystery in this thrilling whodunit experience.',
     category: 'funactivity',
     image: '/murderdash.jpeg',
-    // tags: ['Special', 'Feb 14'],
+    coordinatorName: 'Shankul',
+    coordinatorPhone: '7840808449',
     registerLink: '#murdermystery',
   },
   {
@@ -137,7 +150,8 @@ const events = [
     description: 'Test your patience and precision—keep your hands off and see who stands still the longest.',
     category: 'funactivity',
     image: '/handsoffstandstill.jpeg',
-    // tags: ['Special', 'Feb 14'],
+    coordinatorName: 'Saurabh',
+    coordinatorPhone: '9971084246',
     registerLink: '#handsoffstandstill',
   },
   {
@@ -146,7 +160,8 @@ const events = [
     description: 'Compete in a fast-paced cup stacking challenge—speed and accuracy win the day.',
     category: 'funactivity',
     image: '/cupchallenge.jpeg',
-    // tags: ['Special', 'Feb 14'],
+    coordinatorName: 'Ekansh',
+    coordinatorPhone: '8882296404',
     registerLink: '#cupchallenge',
   },
   {
@@ -155,7 +170,8 @@ const events = [
     description: 'Whisper the word. Feel the beat. Hit the bingo.',
     category: 'funactivity',
     image: '/beatbingo.jpeg',
-    // tags: ['Special', 'Feb 14'],
+    coordinatorName: 'Naman Gupta',
+    coordinatorPhone: '9891239165',
     registerLink: '#beatbingo',
   },
 ];
@@ -339,6 +355,21 @@ export default function EventsSection() {
                 <p className="font-inter text-xs md:text-sm text-[#A7B0C8] leading-relaxed mb-3 line-clamp-2">
                   {event.description}
                 </p>
+                
+
+                {/* Coordinator Name & Phone */}
+                <div className="mb-3">
+                  <div className="font-mono text-[11px] text-[#A7B0C8]">Coordinator</div>
+                  <div className="font-orbitron text-xs text-[#F4F6FF] font-bold">{event.coordinatorName}</div>
+                  <a
+                    href={`tel:${event.coordinatorPhone}`}
+                    className="flex items-center gap-1.5 font-mono text-xs text-[#7B2BFF] hover:text-[#9D4EDD] transition-colors"
+                  >
+                    <Phone size={12} />
+                    <span>{event.coordinatorPhone}</span>
+                  </a>
+                </div>
+
                 <a
                   href={event.registerLink}
                   target="_blank"
